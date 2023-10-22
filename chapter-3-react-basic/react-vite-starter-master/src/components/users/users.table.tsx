@@ -40,7 +40,7 @@ const UsersTable = () => {
 
   return (
     <>
-      <div className="container">
+      <div className="container mt-5">
         <h2>Table Users</h2>
 
         <table>
