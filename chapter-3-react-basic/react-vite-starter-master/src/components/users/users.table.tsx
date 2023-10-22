@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
-import { Table, Button, Modal, Input, notification } from "antd";
+import { Table, Button, notification } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import CreateUserModal from "./create.user.modal";
+import UpdateUserModal from "./update.user.modal";
 // import "../../styles/users.scss";
 
-interface IUsers {
+export interface IUsers {
   _id: string;
-  email: string;
   name: string;
+  email: string;
+  password: string;
+  age: string;
+  gender: string;
   role: string;
+  address: string;
 }
 
 const UsersTable = () => {
   const [listUsers, setListUsers] = useState([]);
   const [accessToken, setAccessToken] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
-  const [address, setAddress] = useState("");
-  const [role, setRole] = useState("");
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [dataUpdate, setDataUpdate] = useState<null | IUsers>(null);
 
   const getData = async () => {
     const res = await fetch("http://localhost:8000/api/v1/auth/login", {
@@ -51,6 +52,11 @@ const UsersTable = () => {
     getData();
   }, []);
 
+  const handleUpdateUser = (user: any) => {
+    setDataUpdate(user);
+    setIsUpdateModalOpen(true);
+  };
+
   const columns: ColumnsType<IUsers> = [
     {
       title: "Name",
@@ -66,6 +72,16 @@ const UsersTable = () => {
     {
       title: "Role",
       dataIndex: "role",
+    },
+    {
+      title: "Action",
+      render: (value, record) => {
+        return (
+          <div>
+            <button onClick={() => handleUpdateUser(record)}>Edit</button>
+          </div>
+        );
+      },
     },
   ];
 
@@ -86,39 +102,13 @@ const UsersTable = () => {
       notification.success({
         message: JSON.stringify(isNewUser.message),
       });
-      setIsModalOpen(false);
+      setIsCreateModalOpen(false);
     } else {
       notification.error({
         message: "Có lỗi xảy ra",
         description: JSON.stringify(isNewUser.message),
       });
     }
-  };
-
-  const handleOk = () => {
-    const data = {
-      name,
-      email,
-      password,
-      age,
-      gender,
-      role,
-      address,
-    };
-    addNewUser(data);
-    setIsModalOpen(false);
-    handleCloseCreateModal();
-  };
-
-  const handleCloseCreateModal = () => {
-    setIsModalOpen(false);
-    setName("");
-    setEmail("");
-    setPassword("");
-    setAge("");
-    setGender("");
-    setAddress("");
-    setRole("");
   };
 
   return (
@@ -129,7 +119,7 @@ const UsersTable = () => {
           <Button
             type="primary"
             onClick={() => {
-              setIsModalOpen(true);
+              setIsCreateModalOpen(true);
             }}
             icon={<PlusCircleOutlined />}
           >
@@ -139,48 +129,19 @@ const UsersTable = () => {
 
         <Table columns={columns} dataSource={listUsers} rowKey={"_id"} />
 
-        <Modal
-          title="Basic Modal"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={() => handleCloseCreateModal()}
-          maskClosable={false}
-        >
-          <div>
-            <label>Name</label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
-          </div>
-          <div>
-            <label>Email</label>
-            <Input value={email} onChange={(e) => setEmail(e.target.value)} />
-          </div>
-          <div>
-            <label>Password</label>
-            <Input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Age</label>
-            <Input value={age} onChange={(e) => setAge(e.target.value)} />
-          </div>
-          <div>
-            <label>Gender</label>
-            <Input value={gender} onChange={(e) => setGender(e.target.value)} />
-          </div>
-          <div>
-            <label>Address</label>
-            <Input
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Role</label>
-            <Input value={role} onChange={(e) => setRole(e.target.value)} />
-          </div>
-        </Modal>
+        <CreateUserModal
+          addNewUser={addNewUser}
+          isCreateModalOpen={isCreateModalOpen}
+          setIsCreateModalOpen={setIsCreateModalOpen}
+        />
+
+        <UpdateUserModal
+          addNewUser={addNewUser}
+          isUpdateModalOpen={isUpdateModalOpen}
+          setIsUpdateModalOpen={setIsUpdateModalOpen}
+          dataUpdate={dataUpdate}
+          setDataUpdate={setDataUpdate}
+        />
       </div>
     </>
   );
