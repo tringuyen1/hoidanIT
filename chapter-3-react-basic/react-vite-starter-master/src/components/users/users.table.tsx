@@ -64,7 +64,7 @@ const UsersTable = () => {
     setIsUpdateModalOpen(true);
   };
 
-  const confirm = async (id: any) => {
+  const confirmDeleteUser = async (id: any) => {
     const deleteUserId = await fetch(
       `http://localhost:8000/api/v1/users/${id}`,
       {
@@ -78,7 +78,7 @@ const UsersTable = () => {
 
     const deleteUser = await deleteUserId.json();
     if (deleteUser.data) {
-      getData();
+      await getData();
       message.success("Click on Yes");
     }
   };
@@ -110,7 +110,7 @@ const UsersTable = () => {
             <Popconfirm
               title="Delete the user"
               description={`Are you sure to delete ${record.name}?`}
-              onConfirm={() => confirm(record._id)}
+              onConfirm={() => confirmDeleteUser(record._id)}
               okText="Yes"
               cancelText="No"
             >
