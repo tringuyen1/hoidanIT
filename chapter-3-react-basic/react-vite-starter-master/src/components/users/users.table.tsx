@@ -43,7 +43,14 @@ const UsersTable = () => {
         Authorization: `Bearer ${data.data.access_token}`,
       },
     });
+
     const users = await res1.json();
+
+    if (!users.data) {
+      notification.error({
+        message: JSON.stringify(users.message),
+      });
+    }
     setListUsers(users.data.result);
     setAccessToken(data.data.access_token);
   };
@@ -78,7 +85,10 @@ const UsersTable = () => {
       render: (value, record) => {
         return (
           <div>
-            <button onClick={() => handleUpdateUser(record)}>Edit</button>
+            <button onClick={() => handleUpdateUser(record)} className="mr-3">
+              Edit
+            </button>
+            <button onClick={() => handleDeleteUser(record._id)}>Delete</button>
           </div>
         );
       },
@@ -111,6 +121,45 @@ const UsersTable = () => {
     }
   };
 
+  const updateUser = async (data: any) => {
+    const updateUser = await fetch("http://localhost:8000/api/v1/users", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ ...data }),
+    });
+
+    const newUpdate = await updateUser.json();
+    if (newUpdate.data) {
+      getData();
+      notification.success({
+        message: JSON.stringify(newUpdate.message),
+      });
+    }
+  };
+
+  const handleDeleteUser = async (id: any) => {
+    const deleteUserId = await fetch(
+      `http://localhost:8000/api/v1/users/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const deleteUser = await deleteUserId.json();
+    if (deleteUser.data) {
+      getData();
+      notification.success({
+        message: JSON.stringify(deleteUser.message),
+      });
+    }
+  };
   return (
     <>
       <div className="container mt-3">
@@ -141,6 +190,7 @@ const UsersTable = () => {
           setIsUpdateModalOpen={setIsUpdateModalOpen}
           dataUpdate={dataUpdate}
           setDataUpdate={setDataUpdate}
+          updateUser={updateUser}
         />
       </div>
     </>

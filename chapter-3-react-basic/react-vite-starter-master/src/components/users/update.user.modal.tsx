@@ -8,15 +8,16 @@ interface IProps {
   setIsUpdateModalOpen: (v: boolean) => void;
   dataUpdate: null | IUsers;
   setDataUpdate: any;
+  updateUser: any;
 }
 
 const UpdateUserModal = (props: IProps) => {
   const {
-    addNewUser,
     isUpdateModalOpen,
     setIsUpdateModalOpen,
     dataUpdate,
     setDataUpdate,
+    updateUser,
   } = props;
 
   const [name, setName] = useState("");
@@ -41,6 +42,7 @@ const UpdateUserModal = (props: IProps) => {
 
   const handleOk = () => {
     const data = {
+      _id: dataUpdate?._id,
       name,
       email,
       password,
@@ -49,7 +51,7 @@ const UpdateUserModal = (props: IProps) => {
       role,
       address,
     };
-    addNewUser(data);
+    updateUser(data);
     setIsUpdateModalOpen(false);
     handleCloseCreateModal();
   };
