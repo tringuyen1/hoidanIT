@@ -167,8 +167,6 @@ const UsersTable = () => {
     }
   };
 
-  const handleDeleteUser = async (id: any) => {};
-
   return (
     <>
       <div className="container mt-3">
