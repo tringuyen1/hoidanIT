@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, Button, notification } from "antd";
+import { Table, Button, notification, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import CreateUserModal from "./create.user.modal";
@@ -64,6 +64,25 @@ const UsersTable = () => {
     setIsUpdateModalOpen(true);
   };
 
+  const confirm = async (id: any) => {
+    const deleteUserId = await fetch(
+      `http://localhost:8000/api/v1/users/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const deleteUser = await deleteUserId.json();
+    if (deleteUser.data) {
+      getData();
+      message.success("Click on Yes");
+    }
+  };
+
   const columns: ColumnsType<IUsers> = [
     {
       title: "Name",
@@ -88,7 +107,15 @@ const UsersTable = () => {
             <button onClick={() => handleUpdateUser(record)} className="mr-3">
               Edit
             </button>
-            <button onClick={() => handleDeleteUser(record._id)}>Delete</button>
+            <Popconfirm
+              title="Delete the user"
+              description={`Are you sure to delete ${record.name}?`}
+              onConfirm={() => confirm(record._id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button danger>Delete</Button>
+            </Popconfirm>
           </div>
         );
       },
@@ -140,26 +167,8 @@ const UsersTable = () => {
     }
   };
 
-  const handleDeleteUser = async (id: any) => {
-    const deleteUserId = await fetch(
-      `http://localhost:8000/api/v1/users/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+  const handleDeleteUser = async (id: any) => {};
 
-    const deleteUser = await deleteUserId.json();
-    if (deleteUser.data) {
-      getData();
-      notification.success({
-        message: JSON.stringify(deleteUser.message),
-      });
-    }
-  };
   return (
     <>
       <div className="container mt-3">
