@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Modal, Input, Form, Button, Select, InputNumber } from "antd";
+
+import { Modal, Input, Form, Select, InputNumber } from "antd";
 const { Option } = Select;
 
 interface IProps {
@@ -76,7 +76,7 @@ const CreateUserModal = (props: IProps) => {
           <Modal
                title="Basic Modal"
                open={isCreateModalOpen}
-               onOk={() => { form.submit() }}
+               onOk={() => form.submit()}
                onCancel={() => handleCloseCreateModal()}
                maskClosable={false}
           >
@@ -110,7 +110,7 @@ const CreateUserModal = (props: IProps) => {
                          name="password"
                          rules={[{ required: true, message: 'Please input your password!' }]}
                     >
-                         <Input.Password />
+                         <Input.Password disabled />
                     </Form.Item>
 
                     <Form.Item
