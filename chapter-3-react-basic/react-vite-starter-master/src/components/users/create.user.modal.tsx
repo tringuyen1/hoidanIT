@@ -70,7 +70,6 @@ const CreateUserModal = (props: IProps) => {
           await addNewUser(data);
           setIsCreateModalOpen(false);
           handleCloseCreateModal();
-          console.log('Success:', values);
      };
      return (
           <Modal
