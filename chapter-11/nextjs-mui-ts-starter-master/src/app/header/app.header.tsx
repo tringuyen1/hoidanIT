@@ -18,6 +18,8 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -61,6 +63,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+  const router = useRouter();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -83,6 +87,10 @@ export default function AppHeader() {
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleRedirectHome = () => {
+    router.push("/");
   };
 
   const menuId = "primary-search-account-menu";
@@ -122,8 +130,17 @@ export default function AppHeader() {
         },
       }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        sx={{
+          a: {
+            color: "unset",
+            textDecoration: "none",
+          },
+        }}
+      >
+        <Link href={"/profile"}>Profile</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
     </Menu>
   );
 
@@ -193,7 +210,11 @@ export default function AppHeader() {
               variant="h6"
               noWrap
               component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
+              sx={{
+                display: { xs: "none", sm: "block" },
+                cursor: "pointer",
+              }}
+              onClick={() => handleRedirectHome()}
             >
               Sound Cloud
             </Typography>
@@ -213,11 +234,16 @@ export default function AppHeader() {
                 gap: "20px",
                 alignItems: "center",
                 cursor: "pointer",
+
+                "> a": {
+                  color: "unset",
+                  textDecoration: "none",
+                },
               }}
             >
-              <span>Playlist</span>
-              <span>Profile</span>
-              <span>Upload</span>
+              <Link href={"/playlist"}>Playlist</Link>
+              <Link href={"/like"}>Likes</Link>
+              <Link href={"/upload"}>Upload</Link>
               <Avatar onClick={handleProfileMenuOpen}>T</Avatar>
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
