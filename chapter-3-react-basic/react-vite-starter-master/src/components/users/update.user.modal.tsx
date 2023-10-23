@@ -3,7 +3,6 @@ import { Modal, Input } from "antd";
 import { IUsers } from "./users.table";
 
 interface IProps {
-	addNewUser: any;
 	isUpdateModalOpen: boolean;
 	setIsUpdateModalOpen: (v: boolean) => void;
 	dataUpdate: null | IUsers;
