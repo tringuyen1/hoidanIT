@@ -11,7 +11,7 @@ const AppFooter = () => {
             <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, backgroundColor: "#f2f2f2" }}>
                 <Container sx={{ display: "flex", gap: 10 }}>
                     <AudioPlayer
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/track/hoidanit.mp3`} // show song mp3
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`} // show song mp3
                         volume={0.5}
                         style={{ boxShadow: "unset" }}
                     />
