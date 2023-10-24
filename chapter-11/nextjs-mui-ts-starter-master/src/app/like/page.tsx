@@ -1,11 +1,11 @@
 "use client";
 
 const LikePage = () => {
-  return (
-    <>
-      <div>like page</div>
-    </>
-  );
+     return (
+          <>
+               <div>like page</div>
+          </>
+     );
 };
 
 export default LikePage;
