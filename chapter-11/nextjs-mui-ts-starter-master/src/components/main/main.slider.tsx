@@ -10,11 +10,12 @@ import Divider from '@mui/material/Divider';
 import { useHasMounted } from "@/app/utils/customHook";
 
 const MainSlider = () => {
-    const hasMounted = useHasMounted()
+    const hasMounted = useHasMounted();
 
     if (!hasMounted) {
-        return (<></>)
+        return (<></>);
     }
+
     const NextArrow = (props: any) => {
         return (
             <Button variant="outlined"
