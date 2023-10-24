@@ -3,6 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider, { Settings } from "react-slick";
 import { Box } from "@mui/material";
+import Link from "next/link";
 import Button from "@mui/material/Button/Button";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -92,7 +93,7 @@ const MainSlider = (props: IProps) => {
                     data && data.map(song => (
                         <div className="track" key={song._id}>
                             <img src={`${process.env}/${song.imgUrl}`} alt=""></img>
-                            <h4>{song.category}</h4>
+                            <Link href={`/track/${song._id}`}><h4>{song.title}</h4></Link>
                             <h5>{song.description}</h5>
                         </div>
                     ))
