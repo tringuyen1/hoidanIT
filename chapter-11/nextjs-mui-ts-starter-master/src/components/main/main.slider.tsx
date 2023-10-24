@@ -93,7 +93,7 @@ const MainSlider = (props: IProps) => {
                     data && data.map(song => (
                         <div className="track" key={song._id}>
                             <img src={`${process.env}/${song.imgUrl}`} alt=""></img>
-                            <Link href={`/track/${song._id}`}><h4>{song.title}</h4></Link>
+                            <Link href={`/track/${song._id}?audio=${song.trackUrl}`}><h4>{song.title}</h4></Link>
                             <h5>{song.description}</h5>
                         </div>
                     ))
