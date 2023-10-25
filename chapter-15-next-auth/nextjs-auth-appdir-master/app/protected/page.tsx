@@ -8,6 +8,9 @@ export default function ProtectedPage() {
   const { data: session } = useSession();
   const [content, setContent] = useState();
 
+  debugger
+  console.log(">>>> check", session)
+
   // Fetch content from protected route
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +27,8 @@ export default function ProtectedPage() {
   if (!session) {
     return <AccessDenied />;
   }
+
+
 
   // If session exists, display content
   return (
