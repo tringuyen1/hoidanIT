@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,44 +15,37 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { literal, object, string, TypeOf } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler } from "react-hook-form";
+// import "./style.scss";
+
+function Copyright(props: any) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-const registerSchema = object({
-  email: string().nonempty("Email is required").email("Email is invalid"),
-  password: string()
-    .nonempty("Password is required")
-    .min(8, "Password must be more than 8 characters")
-    .max(32, "Password must be less than 32 characters"),
-});
-
-type RegisterInput = TypeOf<typeof registerSchema>;
-
-export default function SignIn() {
-  const [loading, setLoading] = useState(false);
-
-  const {
-    register,
-    formState: { errors, isSubmitSuccessful },
-    reset,
-    handleSubmit,
-  } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
-  });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSubmitSuccessful]);
-
-  const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    console.log(values);
+export default function SignUp() {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get("email"),
+      password: data.get("password"),
+    });
   };
 
   return (
@@ -72,11 +65,11 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit(onSubmitHandler)}
+            onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -86,23 +79,19 @@ export default function SignIn() {
               fullWidth
               id="email"
               label="Email Address"
+              name="email"
               autoComplete="email"
               autoFocus
-              error={!!errors["email"]}
-              helperText={errors["email"] ? errors["email"].message : ""}
-              {...register("email")}
             />
             <TextField
               margin="normal"
               required
               fullWidth
+              name="password"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
-              error={!!errors["password"]}
-              helperText={errors["password"] ? errors["password"].message : ""}
-              {...register("password")}
             />
             <Button
               type="submit"
@@ -110,32 +99,17 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign Up
             </Button>
             <Grid container>
-              <Grid item>
-                <Link href={"/auth/signup"} variant="body2">
-                  {"Don't have an account? Sign Up"}
+              <Grid item xs>
+                <Link href={"/auth/signin"} variant="body2">
+                  Back to sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <div
-          className="icons"
-          style={{
-            marginTop: "20px",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <GoogleIcon
-            sx={{ margin: "10px", fontSize: "30px", cursor: "pointer" }}
-          />
-          <GitHubIcon
-            sx={{ margin: "10px", fontSize: "30px", cursor: "pointer" }}
-          />
-        </div>
       </Container>
     </ThemeProvider>
   );
