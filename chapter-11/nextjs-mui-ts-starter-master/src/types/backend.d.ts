@@ -24,6 +24,19 @@ declare global {
         updateAt: string
     }
 
+    interface IAuth {
+        access_token: string,
+        refresh_token: string,
+        user: {
+            _id: string,
+            username: string,
+            email: string,
+            isVerity: string,
+            type: string,
+            role: string
+        }
+    }
+
     interface IRequest {
         url: string;
         method: string;

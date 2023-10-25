@@ -67,7 +67,6 @@ export default function AppHeader() {
      const router = useRouter();
      const { data: session } = useSession();
 
-
      const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
      const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
           React.useState<null | HTMLElement>(null);
@@ -143,7 +142,10 @@ export default function AppHeader() {
                >
                     <Link href={"/profile"}>Profile</Link>
                </MenuItem>
-               <MenuItem onClick={handleMenuClose}>log out</MenuItem>
+               <MenuItem onClick={() => {
+                    handleMenuClose();
+                    signOut();
+               }}>log out</MenuItem>
           </Menu>
      );
 
@@ -252,7 +254,7 @@ export default function AppHeader() {
                                                   <Link href={"/upload"}>Upload</Link>
                                                   <Avatar onClick={handleProfileMenuOpen}>T</Avatar>
                                              </>
-                                        ) : <Link href={"/upload"}>Sign In</Link>
+                                        ) : <Link href={"#"} onClick={() => signIn()}>Sign In</Link>
                                    }
                               </Box>
                               <Box sx={{ display: { xs: "flex", md: "none" } }}>
