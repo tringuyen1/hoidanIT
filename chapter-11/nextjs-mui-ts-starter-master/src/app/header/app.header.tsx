@@ -20,6 +20,7 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const Search = styled("div")(({ theme }) => ({
      position: "relative",
@@ -64,6 +65,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function AppHeader() {
      const router = useRouter();
+     const { data: session } = useSession();
+
 
      const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
      const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -140,7 +143,7 @@ export default function AppHeader() {
                >
                     <Link href={"/profile"}>Profile</Link>
                </MenuItem>
-               <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+               <MenuItem onClick={handleMenuClose}>log out</MenuItem>
           </Menu>
      );
 
@@ -241,10 +244,16 @@ export default function AppHeader() {
                                         },
                                    }}
                               >
-                                   <Link href={"/playlist"}>Playlist</Link>
-                                   <Link href={"/like"}>Likes</Link>
-                                   <Link href={"/upload"}>Upload</Link>
-                                   <Avatar onClick={handleProfileMenuOpen}>T</Avatar>
+                                   {
+                                        session ? (
+                                             <>
+                                                  <Link href={"/playlist"}>Playlist</Link>
+                                                  <Link href={"/like"}>Likes</Link>
+                                                  <Link href={"/upload"}>Upload</Link>
+                                                  <Avatar onClick={handleProfileMenuOpen}>T</Avatar>
+                                             </>
+                                        ) : <Link href={"/upload"}>Sign In</Link>
+                                   }
                               </Box>
                               <Box sx={{ display: { xs: "flex", md: "none" } }}>
                                    <IconButton

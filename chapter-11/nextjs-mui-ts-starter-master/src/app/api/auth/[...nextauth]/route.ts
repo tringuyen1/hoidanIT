@@ -1,3 +1,6 @@
+// lưu thông tin người đăng nhập vào cookie thông qua mã hõa
+
+
 import NextAuth from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import { AuthOptions } from "next-auth"
