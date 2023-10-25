@@ -1,9 +1,12 @@
 import MainSlider from "@/components/main/main.slider";
 import { Container } from "@mui/material";
 import { sendRequest } from "../app/utils/api";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 const HomePage = async () => {
-
+    const session = await getServerSession(authOptions)
+    console.log(session)
     // - cách truyền thống
     // const res = await fetch(`http://localhost:8000/api/v1/tracks/top`, {
     //      method: "POST",
@@ -37,32 +40,34 @@ const HomePage = async () => {
     //      age: string
     // } // tạo gợi ý code để hứng kết quả
 
-    // const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
-    //     url: "http://localhost:8000/api/v1/tracks/top",
-    //     method: "POST",
-    //     body: {
-    //         category: "CHILL",
-    //         limit: 10
-    //     }
-    // })
+    if (session) {
+        // const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
+        //     url: "http://localhost:8000/api/v1/tracks/top",
+        //     method: "POST",
+        //     body: {
+        //         category: "CHILL",
+        //         limit: 10
+        //     }
+        // })
 
-    // const workouts = await sendRequest<IBackendRes<ITrackTop[]>>({
-    //     url: "http://localhost:8000/api/v1/tracks/top",
-    //     method: "POST",
-    //     body: {
-    //         category: "WORKOUT",
-    //         limit: 10
-    //     }
-    // })
+        // const workouts = await sendRequest<IBackendRes<ITrackTop[]>>({
+        //     url: "http://localhost:8000/api/v1/tracks/top",
+        //     method: "POST",
+        //     body: {
+        //         category: "WORKOUT",
+        //         limit: 10
+        //     }
+        // })
 
-    // const party = await sendRequest<IBackendRes<ITrackTop[]>>({
-    //     url: "http://localhost:8000/api/v1/tracks/top",
-    //     method: "POST",
-    //     body: {
-    //         category: "PARTY",
-    //         limit: 10
-    //     }
-    // })
+        // const party = await sendRequest<IBackendRes<ITrackTop[]>>({
+        //     url: "http://localhost:8000/api/v1/tracks/top",
+        //     method: "POST",
+        //     body: {
+        //         category: "PARTY",
+        //         limit: 10
+        //     }
+        // })
+    }
 
     return (
         <>
