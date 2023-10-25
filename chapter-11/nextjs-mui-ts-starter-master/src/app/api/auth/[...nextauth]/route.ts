@@ -56,7 +56,7 @@ export const authOptions: AuthOptions = {
     callbacks: {
         // b1: giải mã token chỗ cookies
         async jwt({ token, user, account, profile, trigger }) {
-            if (trigger === "signIn" && account?.provider === "github") {
+            if (trigger === "signIn" && account?.provider !== "credentials") {
                 // save in cookies
                 // call api
                 const res = await sendRequest<IBackendRes<IAuth>>({
@@ -73,6 +73,13 @@ export const authOptions: AuthOptions = {
                     token.user = res.data?.user;
                 }
             }
+
+            if (trigger === "signIn" && account?.provider == "credentials") {
+                token.access_token = user.access_token;
+                token.refresh_token = user.refresh_token;
+                token.user = user.user;
+            }
+
             return token
         },
         // b2: sau đó nạp (lưu) lại cho session
