@@ -67,9 +67,9 @@ const HomePage = async () => {
     return (
         <>
             <Container>
-                <MainSlider data={chills?.data ? chills.data : []} title={""} />
-                <MainSlider data={workouts?.data ? workouts?.data : []} title={""} />
-                <MainSlider data={party?.data ? party?.data : []} title={""} />
+                <MainSlider data={chills?.data ? chills.data : []} title={"Top Chill"} />
+                <MainSlider data={workouts?.data ? workouts?.data : []} title={"Top Workout"} />
+                <MainSlider data={party?.data ? party?.data : []} title={"Top Party"} />
             </Container>
         </>
     )

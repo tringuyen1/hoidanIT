@@ -4,6 +4,7 @@ import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useWaveSurfer } from "@/app/utils/customHook";
 import { WaveSurferOptions } from "waveSurfer.js";
+import Tooltip from '@mui/material/Tooltip';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import "./wave.scss";
@@ -120,6 +121,13 @@ const WaveTrack = (props: any) => {
           }
      }, [waveSurfer]); // lưu lại 1 function
 
+
+     const callLeft = (moment: number) => {
+          const handleCoreDuration = 199;
+          const percent = (moment / handleCoreDuration) * 100;
+          return `${percent}%`;
+     }
+
      return (
           <div style={{ marginTop: 20 }}>
                <div
@@ -203,17 +211,26 @@ const WaveTrack = (props: any) => {
                                         backdropFilter: "brightness(0.5)"
                                    }}
                               ></div>
-                              <div className="comments">
+                              <div className="comments" style={{ position: "relative" }}>
                                    {
                                         arrComments.map(item => (
-                                             <img style={{
-                                                  height: 20,
-                                                  width: 20,
-                                                  position: "relative",
-                                                  top: 97,
-                                                  zIndex: 20
-                                             }}
-                                                  src="http://localhost:3000/audio/chill1.png" />
+                                             <Tooltip title={item.user} arrow>
+                                                  <img
+                                                       onPointerMove={() => {
+                                                            const hover = hoverRef.current!;
+                                                            hover.style.width = callLeft(item.moment)
+                                                       }}
+                                                       style={{
+                                                            height: 20,
+                                                            width: 20,
+                                                            position: "absolute",
+                                                            top: 70,
+                                                            left: callLeft(item.moment),
+                                                            zIndex: 20
+                                                       }}
+                                                       src="http://localhost:3000/audio/chill1.png" />
+                                             </Tooltip>
+
                                         ))
                                    }
 
