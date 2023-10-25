@@ -13,7 +13,7 @@ export const authOptions: AuthOptions = {
     providers: [
         CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
-            name: "Credentials", // tên hiển thị
+            name: "Sound Cloud", // tên hiển thị
             // `credentials` is used to generate a form on the sign in page.
             // You can specify which fields should be submitted, by adding keys to the `credentials` object.
             // e.g. domain, username, password, 2FA token, etc.
@@ -26,9 +26,19 @@ export const authOptions: AuthOptions = {
                 // Add logic here to look up the user from the credentials supplied
                 const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
 
-                if (user) {
+
+                const res = await sendRequest<IBackendRes<IAuth>>({
+                    url: "http://localhost:8000/api/v1/auth/login",
+                    method: "POST",
+                    body: {
+                        username: credentials?.username,
+                        password: credentials?.password,
+                    },
+                })
+
+                if (res && res.data) {
                     // Any object returned will be saved in `user` property of the JWT
-                    return user
+                    return res.data as any
                 } else {
                     // If you return null then an error will be displayed advising the user to check their details.
                     return null
