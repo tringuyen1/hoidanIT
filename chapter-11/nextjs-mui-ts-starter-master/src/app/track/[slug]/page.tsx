@@ -1,5 +1,6 @@
 "use client";
 import WaveTrack from "@/components/track/wave.track";
+import Container from "@mui/material/Container";
 import { useSearchParams } from "next/navigation"; // get params vd: ?ad=id
 // get params
 const DetailTrackPage = (props: any) => {
@@ -11,9 +12,9 @@ const DetailTrackPage = (props: any) => {
   console.log(fileName);
   return (
     <>
-      <div>
+      <Container>
         <WaveTrack />
-      </div>
+      </Container>
     </>
   );
 };
