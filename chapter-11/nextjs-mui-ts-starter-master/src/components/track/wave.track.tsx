@@ -17,6 +17,30 @@ const WaveTrack = (props: any) => {
      const searchParams = useSearchParams();
      const fileName = searchParams.get("audio");
 
+     const arrComments = [
+          {
+               id: 1,
+               avatar: "http://localhost:8000/images/chill1.png",
+               moment: 10,
+               user: "username 1",
+               content: "just a comment1"
+          },
+          {
+               id: 2,
+               avatar: "http://localhost:8000/images/chill1.png",
+               moment: 30,
+               user: "username 2",
+               content: "just a comment3"
+          },
+          {
+               id: 3,
+               avatar: "http://localhost:8000/images/chill1.png",
+               moment: 50,
+               user: "username 3",
+               content: "just a comment3"
+          },
+     ]
+
 
      const formatTime = (seconds: number) => {
           const minutes = Math.floor(seconds / 60)
@@ -180,14 +204,19 @@ const WaveTrack = (props: any) => {
                                    }}
                               ></div>
                               <div className="comments">
-                                   <img style={{
-                                        height: 20,
-                                        width: 20,
-                                        position: "relative",
-                                        top: 90,
-                                        zIndex: 20
-                                   }}
-                                        src="http://localhost:3000/audio/chill1.png" />
+                                   {
+                                        arrComments.map(item => (
+                                             <img style={{
+                                                  height: 20,
+                                                  width: 20,
+                                                  position: "relative",
+                                                  top: 97,
+                                                  zIndex: 20
+                                             }}
+                                                  src="http://localhost:3000/audio/chill1.png" />
+                                        ))
+                                   }
+
                               </div>
                          </div>
                     </div>
