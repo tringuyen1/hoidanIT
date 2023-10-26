@@ -1,142 +1,21 @@
-"use client";
-import { useEffect, useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import GoogleIcon from "@mui/icons-material/Google";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import { literal, object, string, TypeOf } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import AuthSignIn from "@/components/auth/auth.signin"
+import { getServerSession } from "next-auth/next";
+import { redirect } from 'next/navigation'
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+const signIn = async () => {
+  const session = await getServerSession(authOptions);
 
-const registerSchema = object({
-  email: string().nonempty("Email is required").email("Email is invalid"),
-  password: string()
-    .nonempty("Password is required")
-    .min(8, "Password must be more than 8 characters")
-    .max(32, "Password must be less than 32 characters"),
-});
-
-type RegisterInput = TypeOf<typeof registerSchema>;
-
-export default function SignIn() {
-  const [loading, setLoading] = useState(false);
-
-  const {
-    register,
-    formState: { errors, isSubmitSuccessful },
-    reset,
-    handleSubmit,
-  } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
-  });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSubmitSuccessful]);
-
-  const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    console.log(values);
-  };
+  if (session) {
+    redirect("/");
+  }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-          className="login"
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmitHandler)}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              autoComplete="email"
-              autoFocus
-              error={!!errors["email"]}
-              helperText={errors["email"] ? errors["email"].message : ""}
-              {...register("email")}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              error={!!errors["password"]}
-              helperText={errors["password"] ? errors["password"].message : ""}
-              {...register("password")}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item>
-                <Link href={"/auth/signup"} variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <div
-          className="icons"
-          style={{
-            marginTop: "20px",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <GoogleIcon
-            sx={{ margin: "10px", fontSize: "30px", cursor: "pointer" }}
-          />
-          <GitHubIcon
-            sx={{ margin: "10px", fontSize: "30px", cursor: "pointer" }}
-          />
-        </div>
-      </Container>
-    </ThemeProvider>
-  );
+    <>
+      <AuthSignIn />
+    </>
+  )
+
 }
+
+export default signIn

@@ -41,39 +41,39 @@ const HomePage = async () => {
   // } // tạo gợi ý code để hứng kết quả
 
   // if (session) {
-  const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: "http://localhost:8000/api/v1/tracks/top",
-    method: "POST",
-    body: {
-      category: "CHILL",
-      limit: 10,
-    },
-  });
+  // const chills = await sendRequest<IBackendRes<ITrackTop[]>>({
+  //   url: "http://localhost:8000/api/v1/tracks/top",
+  //   method: "POST",
+  //   body: {
+  //     category: "CHILL",
+  //     limit: 10,
+  //   },
+  // });
 
-  const workouts = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: "http://localhost:8000/api/v1/tracks/top",
-    method: "POST",
-    body: {
-      category: "WORKOUT",
-      limit: 10,
-    },
-  });
+  // const workouts = await sendRequest<IBackendRes<ITrackTop[]>>({
+  //   url: "http://localhost:8000/api/v1/tracks/top",
+  //   method: "POST",
+  //   body: {
+  //     category: "WORKOUT",
+  //     limit: 10,
+  //   },
+  // });
 
-  const party = await sendRequest<IBackendRes<ITrackTop[]>>({
-    url: "http://localhost:8000/api/v1/tracks/top",
-    method: "POST",
-    body: {
-      category: "PARTY",
-      limit: 10,
-    },
-  });
+  // const party = await sendRequest<IBackendRes<ITrackTop[]>>({
+  //   url: "http://localhost:8000/api/v1/tracks/top",
+  //   method: "POST",
+  //   body: {
+  //     category: "PARTY",
+  //     limit: 10,
+  //   },
+  // });
   // }
 
   return (
     <>
       <Container>
         <MainSlider data={[]} title={""} />
-        <MainSlider
+        {/* <MainSlider
           data={chills?.data ? chills.data : []}
           title={"Top Chill"}
         />
@@ -81,7 +81,7 @@ const HomePage = async () => {
           data={workouts?.data ? workouts?.data : []}
           title={"Top Workout"}
         />
-        <MainSlider data={party?.data ? party?.data : []} title={"Top Party"} />
+        <MainSlider data={party?.data ? party?.data : []} title={"Top Party"} /> */}
       </Container>
     </>
   );
