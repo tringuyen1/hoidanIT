@@ -57,6 +57,7 @@ export default function AuthSignIn() {
     useEffect(() => {
         if (isSubmitSuccessful) {
             // call api
+            setShowMessage(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSubmitSuccessful]);
@@ -72,6 +73,7 @@ export default function AuthSignIn() {
             redirect("/");
         } else {
             console.log("login failed!");
+            setResMessage("login failed!")
         }
     };
 
@@ -205,9 +207,9 @@ export default function AuthSignIn() {
                         </div>
                     </Grid>
                 </Grid>
-                <Snackbar open={true} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+                <Snackbar open={showMessage} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
                     <Alert severity="success" sx={{ width: '100%' }}>
-                        This is a success message!
+                        {resMessage}
                     </Alert>
                 </Snackbar>
             </Container>
