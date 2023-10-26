@@ -73,7 +73,7 @@ export const authOptions: AuthOptions = {
                 }
             }
 
-            if (trigger === "signIn" && account?.provider == "credentials") {
+            if (trigger === "signIn" && account?.provider === "credentials") {
                 // @ts-ignore
                 token.access_token = user.access_token;
                 // @ts-ignore

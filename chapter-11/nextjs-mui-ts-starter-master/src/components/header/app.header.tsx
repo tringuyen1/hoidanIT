@@ -251,7 +251,7 @@ export default function AppHeader() {
                                              <>
                                                   <Link href={"/playlist"}>Playlist</Link>
                                                   <Link href={"/like"}>Likes</Link>
-                                                  <Link href={"/upload"}>Upload</Link>
+                                                  <Link href={"/track/upload"}>Upload</Link>
                                                   <Avatar onClick={handleProfileMenuOpen}>T</Avatar>
                                              </>
                                         ) : <Link href={"/auth/signin"} >Sign In</Link>
