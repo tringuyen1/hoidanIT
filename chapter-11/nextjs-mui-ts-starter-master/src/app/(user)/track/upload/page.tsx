@@ -1,16 +1,14 @@
+import UploadTabs from "@/components/track/upload.tab"
 
-"use client"
 
 const UploadPage = () => {
-
     return (
         <>
             <div>
-
-                upload page
+                <UploadTabs />
             </div>
         </>
     )
 }
 
-export default UploadPage;
+export default UploadPage
