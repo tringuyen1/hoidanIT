@@ -207,8 +207,8 @@ export default function AuthSignIn() {
                         </div>
                     </Grid>
                 </Grid>
-                <Snackbar open={showMessage} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-                    <Alert severity="success" sx={{ width: '100%' }}>
+                <Snackbar open={showMessage} autoHideDuration={2000} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+                    <Alert severity="error" sx={{ width: '100%' }} onClose={() => setShowMessage(false)}>
                         {resMessage}
                     </Alert>
                 </Snackbar>

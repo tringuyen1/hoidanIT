@@ -74,8 +74,11 @@ export const authOptions: AuthOptions = {
             }
 
             if (trigger === "signIn" && account?.provider == "credentials") {
+                // @ts-ignore
                 token.access_token = user.access_token;
+                // @ts-ignore
                 token.refresh_token = user.refresh_token;
+                // @ts-ignore
                 token.user = user.user;
             }
 
