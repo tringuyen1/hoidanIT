@@ -25,7 +25,7 @@ const UsersTable = () => {
   const [dataUpdate, setDataUpdate] = useState<null | IUsers>(null);
   const [meta, setMeta] = useState({
     current: 1,
-    pageSize: 5,
+    pageSize: 10,
     pages: 0,
     total: 0,
   });
@@ -107,9 +107,13 @@ const UsersTable = () => {
       render: (value, record) => {
         return (
           <div>
-            <button onClick={() => handleUpdateUser(record)} className="mr-3">
+            <Button
+              type="primary"
+              onClick={() => handleUpdateUser(record)}
+              className="mr-3"
+            >
               Edit
-            </button>
+            </Button>
             <Popconfirm
               title="Delete the user"
               description={`Are you sure to delete ${record.name}?`}
@@ -158,7 +162,7 @@ const UsersTable = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ ...data }),
+      body: JSON.stringify(data),
     });
 
     const newUpdate = await updateUser.json();
