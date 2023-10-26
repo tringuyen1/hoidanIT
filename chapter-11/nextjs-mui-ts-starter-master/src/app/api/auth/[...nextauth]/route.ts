@@ -6,6 +6,7 @@ import GithubProvider from "next-auth/providers/github"
 import { AuthOptions } from "next-auth"
 import { sendRequest } from "../../../utils/api";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { JWT } from "next-auth/jwt";
 
 export const authOptions: AuthOptions = {
     secret: process.env.NO_SECRET,
@@ -22,12 +23,10 @@ export const authOptions: AuthOptions = {
                 username: { label: "Username", type: "text" },
                 password: { label: "Password", type: "password" }
             },
+
             async authorize(credentials, req) {
                 // Add logic here to look up the user from the credentials supplied
-                const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
-
-
-                const res = await sendRequest<IBackendRes<IAuth>>({
+                const res = await sendRequest<IBackendRes<JWT>>({
                     url: "http://localhost:8000/api/v1/auth/login",
                     method: "POST",
                     body: {
@@ -41,7 +40,7 @@ export const authOptions: AuthOptions = {
                     return res.data as any
                 } else {
                     // If you return null then an error will be displayed advising the user to check their details.
-                    return null
+                    throw new Error(res?.message as string);
 
                     // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
                 }

@@ -22,6 +22,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Divider from '@mui/material/Divider';
 import { signIn, signOut } from "next-auth/react"
+import { redirect } from "next/navigation";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -56,8 +57,18 @@ export default function AuthSignIn() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSubmitSuccessful]);
 
-    const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-        console.log(values);
+    const onSubmitHandler: SubmitHandler<RegisterInput> = async (values) => {
+        const res = await signIn("credentials", {
+            username: values.email,
+            password: values.password,
+            redirect: false
+        })
+
+        if (!res?.error) {
+            redirect("/");
+        } else {
+            console.log("login failed!");
+        }
     };
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -96,7 +107,6 @@ export default function AuthSignIn() {
                             </Typography>
                             <Box
                                 component="form"
-                                onSubmit={handleSubmit(onSubmitHandler)}
                                 noValidate
                                 sx={{ mt: 1 }}
                             >
@@ -141,10 +151,16 @@ export default function AuthSignIn() {
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
+                                    onClick={handleSubmit(onSubmitHandler)}
                                 >
                                     Sign In
                                 </Button>
                                 <Grid container>
+                                    <Grid item xs>
+                                        <Link href={"/"} variant="body2">
+                                            Back to home page
+                                        </Link>
+                                    </Grid>
                                     <Grid item>
                                         <Link href={"/auth/signup"} variant="body2">
                                             {"Don't have an account? Sign Up"}
@@ -176,7 +192,7 @@ export default function AuthSignIn() {
                                 sx={{
                                     margin: "10px"
                                 }}
-                                onClick={() => { signIn("github") }}
+                                onClick={() => { signIn("github", { redirect: false }) }}
                             >
                                 <GitHubIcon
                                     sx={{ margin: "10px", fontSize: "30px", cursor: "pointer" }}
