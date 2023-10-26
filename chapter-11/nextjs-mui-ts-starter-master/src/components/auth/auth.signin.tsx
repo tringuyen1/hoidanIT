@@ -23,6 +23,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Divider from '@mui/material/Divider';
 import { signIn, signOut } from "next-auth/react"
 import { redirect } from "next/navigation";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -40,6 +42,8 @@ type RegisterInput = TypeOf<typeof registerSchema>;
 export default function AuthSignIn() {
 
     const [showPassword, setShowPassword] = useState(false);
+    const [showMessage, setShowMessage] = useState(false);
+    const [resMessage, setResMessage] = useState("");
 
     const {
         register,
@@ -200,8 +204,12 @@ export default function AuthSignIn() {
                             </Avatar>
                         </div>
                     </Grid>
-
                 </Grid>
+                <Snackbar open={true} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+                    <Alert severity="success" sx={{ width: '100%' }}>
+                        This is a success message!
+                    </Alert>
+                </Snackbar>
             </Container>
 
         </ThemeProvider >

@@ -3,7 +3,7 @@ import AuthSignIn from "@/components/auth/auth.signin"
 import { getServerSession } from "next-auth/next";
 import { redirect } from 'next/navigation'
 
-const signIn = async () => {
+const SignIn = async () => {
   const session = await getServerSession(authOptions);
 
   if (session) {
@@ -18,4 +18,4 @@ const signIn = async () => {
 
 }
 
-export default signIn
+export default SignIn
