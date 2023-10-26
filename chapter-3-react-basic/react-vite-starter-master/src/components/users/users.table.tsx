@@ -31,18 +31,7 @@ const UsersTable = () => {
   });
 
   const getData = async () => {
-    const res = await fetch("http://localhost:8000/api/v1/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: "admin@gmail.com",
-        password: "123456",
-      }),
-    });
-    const data = await res.json();
-    const res1 = await fetch(
+    const res = await fetch(
       `http://localhost:8000/api/v1/users?current=${meta.current}&pageSize=${meta.pageSize}`,
       {
         method: "GET",
@@ -53,7 +42,7 @@ const UsersTable = () => {
       }
     );
 
-    const users = await res1.json();
+    const users = await res.json();
 
     if (!users.data) {
       notification.error({
