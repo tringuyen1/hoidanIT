@@ -11,7 +11,9 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 
-
+interface IProps {
+    trackUpload: { filename: string, percent: number }
+}
 
 const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
     return (
@@ -40,10 +42,10 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-const currencies = [
+const category = [
     {
-        value: 'CHILLS',
-        label: 'CHILLS',
+        value: 'CHILL',
+        label: 'CHILL',
     },
     {
         value: 'WORKOUT',
@@ -52,30 +54,31 @@ const currencies = [
     {
         value: 'PARTY',
         label: 'PARTY',
-    },
+    }
 ];
 
-const Step2 = () => {
 
-    const [progress, setProgress] = useState(10);
+const Step2 = (props: IProps) => {
+    const { trackUpload } = props;
+    // const [progress, setProgress] = useState(10);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
+    // useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
+    //     }, 800);
+    //     return () => {
+    //         clearInterval(timer);
+    //     };
+    // }, []);
 
     return (
         <>
             <div>
                 <Box sx={{ width: '100%' }}>
                     <div>
-                        Your uploading track:
+                        Your uploading track: {trackUpload.filename}
                     </div>
-                    <LinearProgressWithLabel value={progress} />
+                    <LinearProgressWithLabel value={trackUpload.percent} />
                 </Box>
 
                 <Box sx={{ flexGrow: 1, marginTop: "15px" }}>
@@ -126,7 +129,7 @@ const Step2 = () => {
                                     variant="standard"
 
                                 >
-                                    {currencies.map((option) => (
+                                    {category.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
                                             {option.label}
                                         </MenuItem>
