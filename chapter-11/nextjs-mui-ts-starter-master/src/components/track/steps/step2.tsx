@@ -106,6 +106,9 @@ const Step2 = (props: IProps) => {
             url: "http://localhost:8000/api/v1/tracks",
             method: "POST",
             body: info,
+            headers: {
+                Authorization: `Bearer ${session?.access_token}`
+            }
         });
 
         if (!res.data) {

@@ -59,24 +59,16 @@ const Step1 = (props: IProps) => {
 				setValue(1);
 				console.log(">>>> check", file.data)
 
-				setTrackUpload({
-					...trackUpload,
+				// @ts-ignore
+				setTrackUpload((prevState: any) => ({
+					...prevState,
 					uploadTrackFileName: file.data.data.filename
-				})
+				}));
+
 			} catch (error) {
 				// @ts-ignore
 				alert("upload failed")
 			}
-
-			// const file = await sendRequestFile<IBackendRes<ITrackTop[]>>({
-			//   url: "http://localhost:8000/api/v1/files/upload",
-			//   method: "POST",
-			//   body: formData,
-			//   headers: {
-			//     target_type: "tracks",
-			//     Authorization: `Bearer ${session?.access_token}`,
-			//   },
-			// });
 		}
 	}, [session]) // lưu giá trị của 1 function. chỉ chạy 1 lần duy nhất. khi session thay đổi thì hàm trên mới chạy lại
 
