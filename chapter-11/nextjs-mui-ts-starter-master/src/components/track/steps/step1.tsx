@@ -40,7 +40,7 @@ const Step1 = (props: IProps) => {
 			const formData = new FormData();
 			formData.append("fileUpload", acceptedFiles[0]);
 			const config = {
-				headers: { Authorization: `Bearer ${session?.access_token}`, target_type: "tracks", delay: 2000 },
+				headers: { Authorization: `Bearer ${session?.access_token}`, target_type: "tracks" },
 				onUploadProgress: (progressEvent: any) => {
 					let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total)!;
 					setTrackUpload({
