@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react"
 import { useDropzone, FileWithPath } from "react-dropzone";
 import "../wave.scss";
 import { styled } from "@mui/material/styles";
@@ -19,7 +20,10 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const Step1 = () => {
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
+    // Do something with the files
+  }, [])
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const files = acceptedFiles.map((file: FileWithPath) => (
     <li key={file.path}>
@@ -35,6 +39,7 @@ const Step1 = () => {
             component="label"
             variant="contained"
             startIcon={<CloudUploadIcon />}
+            onClick={(e) => e.preventDefault()}
           >
             Upload file
             <VisuallyHiddenInput type="file" />
