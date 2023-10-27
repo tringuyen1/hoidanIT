@@ -10,9 +10,13 @@ import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import { useSession } from 'next-auth/react';
+import Axios from "axios";
+import { sendRequestFile } from '@/app/utils/api';
 
 interface IProps {
-    trackUpload: { filename: string, percent: number }
+    setTrackUpload: (v: { filename: string, percent: number, uploadTrackFileName: string }) => void,
+    trackUpload: { filename: string, percent: number, uploadTrackFileName: string }
 }
 
 const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
@@ -57,8 +61,24 @@ const category = [
     }
 ];
 
+interface INewTrack {
+    title: string,
+    description: string,
+    trackUrl: string,
+    imgUrl: string,
+    category: string
+}
+
 
 const Step2 = (props: IProps) => {
+    const { data: session } = useSession();
+    const [info, setInfo] = useState<INewTrack>({
+        title: "",
+        description: "",
+        trackUrl: "",
+        imgUrl: "",
+        category: ""
+    });
     const { trackUpload } = props;
     // const [progress, setProgress] = useState(10);
 
@@ -71,9 +91,48 @@ const Step2 = (props: IProps) => {
     //     };
     // }, []);
 
+    useEffect(() => {
+        if (trackUpload && trackUpload.uploadTrackFileName) {
+            setInfo({
+                ...info,
+                trackUrl: trackUpload.uploadTrackFileName
+            })
+        }
+    }, [trackUpload])
+
+    const handleCreateNewTrack = async () => {
+        console.log(">>>> check", info);
+        const res = await sendRequestFile<IBackendRes<ITrackTop[]>>({
+            url: "http://localhost:8000/api/v1/tracks",
+            method: "POST",
+            body: info,
+        });
+
+        if (!res.data) {
+            alert(res.message);
+        }
+    }
+
+    const uploadImages = async (filename: string) => {
+        const formData = new FormData();
+        formData.append("fileUpload", filename)
+        const config = {
+            headers: { Authorization: `Bearer ${session?.access_token}`, target_type: "images" },
+        }
+        try {
+            const res = await Axios.post("http://localhost:8000/api/v1/files/upload", formData, config);
+            setInfo({
+                ...info,
+                imgUrl: res.data.data.filename
+            })
+        } catch (error) {
+            alert("upload failed")
+        }
+    }
+
     return (
         <>
-            <div>
+            <div className='step-2'>
                 <Box sx={{ width: '100%' }}>
                     <div>
                         Your uploading track: {trackUpload.filename}
@@ -91,10 +150,24 @@ const Step2 = (props: IProps) => {
                         }}>
                             <div style={{ height: 250, width: 250, background: "#ccc" }}>
                                 <div>
+                                    {info.imgUrl && (
+                                        <img
+                                            style={{ height: 250, width: 250 }}
+                                            src={`${process.env}/images/${info.imgUrl}`}
+                                            alt=''>
+                                        </img>
+                                    )}
                                 </div>
                             </div>
 
-                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}
+                                onChange={(e) => {
+                                    const getFile = e.target as HTMLInputElement
+                                    if (getFile.files) {
+                                        uploadImages(getFile.files[0].name)
+                                    }
+                                }}
+                            >
                                 Upload file
                                 <VisuallyHiddenInput type="file" />
                             </Button>
@@ -111,14 +184,34 @@ const Step2 = (props: IProps) => {
                                 autoComplete="off"
                             >
                                 <TextField
-                                    id="standard-basic"
+                                    value={info?.title}
+                                    onChange={(e) => {
+                                        setInfo({
+                                            ...info,
+                                            title: e.target.value,
+                                        })
+                                    }}
                                     label="Title" variant="standard" fullWidth margin="dense"
                                 />
                                 <TextField
+                                    value={info?.description}
+                                    onChange={(e) => {
+                                        setInfo({
+                                            ...info,
+                                            description: e.target.value,
+                                        })
+                                    }}
                                     id="standard-basic"
                                     label="Description" variant="standard" fullWidth margin="dense"
                                 />
                                 <TextField
+                                    value={info?.category}
+                                    onChange={(e) => {
+                                        setInfo({
+                                            ...info,
+                                            category: e.target.value,
+                                        })
+                                    }}
                                     sx={{
                                         mt: 3
                                     }}
@@ -137,6 +230,7 @@ const Step2 = (props: IProps) => {
                                 </TextField>
                                 <Button
                                     variant="outlined"
+                                    onClick={() => handleCreateNewTrack()}
                                     sx={{
                                         mt: 5,
                                         width: "25px"
