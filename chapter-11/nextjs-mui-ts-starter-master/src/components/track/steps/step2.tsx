@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { useSession } from 'next-auth/react';
 import Axios from "axios";
-import { sendRequestFile } from '@/app/utils/api';
+import { sendRequest, sendRequestFile } from '@/app/utils/api';
 
 interface IProps {
     setTrackUpload: (v: { filename: string, percent: number, uploadTrackFileName: string }) => void,
@@ -92,7 +92,6 @@ const Step2 = (props: IProps) => {
     // }, []);
 
     useEffect(() => {
-        console.log(trackUpload)
         if (trackUpload && trackUpload.uploadTrackFileName) {
             setInfo({
                 ...info,
@@ -103,7 +102,7 @@ const Step2 = (props: IProps) => {
 
     const handleCreateNewTrack = async () => {
         console.log(">>>> check", info);
-        const res = await sendRequestFile<IBackendRes<ITrackTop[]>>({
+        const res = await sendRequest<IBackendRes<ITrackTop[]>>({
             url: "http://localhost:8000/api/v1/tracks",
             method: "POST",
             body: info,
@@ -127,7 +126,7 @@ const Step2 = (props: IProps) => {
             const res = await Axios.post("http://localhost:8000/api/v1/files/upload", formData, config);
             setInfo({
                 ...info,
-                imgUrl: res.data.data.filename
+                imgUrl: res.data.data.fileName
             })
         } catch (error) {
             alert("upload failed")
@@ -157,7 +156,7 @@ const Step2 = (props: IProps) => {
                                     {info.imgUrl && (
                                         <img
                                             style={{ height: 250, width: 250 }}
-                                            src={`${process.env}/images/${info.imgUrl}`}
+                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`}
                                             alt=''>
                                         </img>
                                     )}

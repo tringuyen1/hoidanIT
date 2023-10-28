@@ -25,8 +25,8 @@ const VisuallyHiddenInput = styled("input")({
 
 interface IProps {
 	setValue: (v: number) => void,
-	setTrackUpload: (v: { filename: string, percent: number, uploadTrackFileName: string }) => void,
-	trackUpload: { filename: string, percent: number, uploadTrackFileName: string }
+	setTrackUpload: any,
+	trackUpload: any
 }
 
 const Step1 = (props: IProps) => {
@@ -57,12 +57,9 @@ const Step1 = (props: IProps) => {
 					'http://localhost:8000/api/v1/files/upload', formData, config
 				);
 				setValue(1);
-				console.log(">>>> check", file.data)
-
-				// @ts-ignore
 				setTrackUpload((prevState: any) => ({
 					...prevState,
-					uploadTrackFileName: file.data.data.filename
+					uploadTrackFileName: file.data.data.fileName
 				}));
 
 			} catch (error) {
@@ -70,7 +67,7 @@ const Step1 = (props: IProps) => {
 				alert("upload failed")
 			}
 		}
-	}, [session,trackUpload]) // lưu giá trị của 1 function. chỉ chạy 1 lần duy nhất. khi session thay đổi thì hàm trên mới chạy lại
+	}, [session]) // lưu giá trị của 1 function. chỉ chạy 1 lần duy nhất. khi session thay đổi thì hàm trên mới chạy lại
 
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone(
 		{
