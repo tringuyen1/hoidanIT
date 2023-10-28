@@ -70,7 +70,7 @@ const Step1 = (props: IProps) => {
 				alert("upload failed")
 			}
 		}
-	}, [session]) // lưu giá trị của 1 function. chỉ chạy 1 lần duy nhất. khi session thay đổi thì hàm trên mới chạy lại
+	}, [session,trackUpload]) // lưu giá trị của 1 function. chỉ chạy 1 lần duy nhất. khi session thay đổi thì hàm trên mới chạy lại
 
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone(
 		{

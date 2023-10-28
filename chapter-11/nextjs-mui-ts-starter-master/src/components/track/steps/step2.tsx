@@ -16,7 +16,7 @@ import { sendRequestFile } from '@/app/utils/api';
 
 interface IProps {
     setTrackUpload: (v: { filename: string, percent: number, uploadTrackFileName: string }) => void,
-    trackUpload: { filename: string, percent: number, uploadTrackFileName: string }
+    trackUpload: { filename: string, percent: number, uploadTrackFileName: any }
 }
 
 const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
@@ -92,6 +92,7 @@ const Step2 = (props: IProps) => {
     // }, []);
 
     useEffect(() => {
+        console.log(trackUpload)
         if (trackUpload && trackUpload.uploadTrackFileName) {
             setInfo({
                 ...info,
@@ -116,9 +117,9 @@ const Step2 = (props: IProps) => {
         }
     }
 
-    const uploadImages = async (filename: string) => {
+    const uploadImages = async (file: string) => {
         const formData = new FormData();
-        formData.append("fileUpload", filename)
+        formData.append("fileUpload", file)
         const config = {
             headers: { Authorization: `Bearer ${session?.access_token}`, target_type: "images" },
         }
@@ -167,7 +168,7 @@ const Step2 = (props: IProps) => {
                                 onChange={(e) => {
                                     const getFile = e.target as HTMLInputElement
                                     if (getFile.files) {
-                                        uploadImages(getFile.files[0].name)
+                                        uploadImages(getFile.files[0])
                                     }
                                 }}
                             >
