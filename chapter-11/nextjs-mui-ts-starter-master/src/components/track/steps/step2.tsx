@@ -117,7 +117,7 @@ const Step2 = (props: IProps) => {
         }
     }
 
-    const uploadImages = async (file: string) => {
+    const uploadImages = async (file: any) => {
         const formData = new FormData();
         formData.append("fileUpload", file)
         const config = {
