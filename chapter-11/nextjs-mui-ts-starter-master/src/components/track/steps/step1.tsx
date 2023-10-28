@@ -9,6 +9,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 // import { sendRequestFile } from "@/app/utils/api";
 import { useSession } from "next-auth/react";
 import Axios from "axios";
+import { useToast } from "@/app/utils/toast";
 
 
 const VisuallyHiddenInput = styled("input")({
@@ -32,6 +33,7 @@ interface IProps {
 const Step1 = (props: IProps) => {
 	const { data: session } = useSession();
 	const { setValue, setTrackUpload, trackUpload } = props
+	const toast = useToast();
 
 	const onDrop = useCallback(async (acceptedFiles: FileWithPath[]) => {
 		// Do something with the files
@@ -61,10 +63,9 @@ const Step1 = (props: IProps) => {
 					...prevState,
 					uploadTrackFileName: file.data.data.fileName
 				}));
-
 			} catch (error) {
 				// @ts-ignore
-				alert("upload failed")
+				toast.error(erorr?.response?.data.message)
 			}
 		}
 	}, [session]) // lưu giá trị của 1 function. chỉ chạy 1 lần duy nhất. khi session thay đổi thì hàm trên mới chạy lại

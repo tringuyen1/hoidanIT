@@ -13,8 +13,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { useSession } from 'next-auth/react';
 import Axios from "axios";
 import { sendRequest, sendRequestFile } from '@/app/utils/api';
+import { useToast } from '@/app/utils/toast';
 
 interface IProps {
+    setValue: (v: number) => void
     setTrackUpload: (v: { filename: string, percent: number, uploadTrackFileName: string }) => void,
     trackUpload: { filename: string, percent: number, uploadTrackFileName: any }
 }
@@ -71,7 +73,10 @@ interface INewTrack {
 
 
 const Step2 = (props: IProps) => {
+    const { setValue } = props
     const { data: session } = useSession();
+    const toast = useToast();
+
     const [info, setInfo] = useState<INewTrack>({
         title: "",
         description: "",
@@ -111,9 +116,14 @@ const Step2 = (props: IProps) => {
             }
         });
 
-        if (!res.data) {
-            alert(res.message);
+        if (res.data) {
+            setValue(0);
+            toast.success("create a new track success")
+
+        } else {
+            toast.error(res.message)
         }
+
     }
 
     const uploadImages = async (file: any) => {
@@ -128,8 +138,12 @@ const Step2 = (props: IProps) => {
                 ...info,
                 imgUrl: res.data.data.fileName
             })
+            if (res.data) {
+                toast.success(res.data.message)
+            }
         } catch (error) {
-            alert("upload failed")
+            // @ts-ignore
+            toast.error(error?.response.data.message)
         }
     }
 

@@ -67,7 +67,7 @@ const UploadTabs = () => {
             <Step1 setValue={setValue} setTrackUpload={setTrackUpload} trackUpload={trackUpload} />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <Step2 trackUpload={trackUpload} setTrackUpload={setTrackUpload} />
+            <Step2 trackUpload={trackUpload} setTrackUpload={setTrackUpload} setValue={setValue} />
           </CustomTabPanel>
         </Box>
       </Container>

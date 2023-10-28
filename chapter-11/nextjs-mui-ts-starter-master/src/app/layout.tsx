@@ -3,6 +3,7 @@ import ThemeRegistry from "@/components/theme-registry/theme.registry";
 import AppHeader from "../components/header/app.header";
 import AppFooter from "../components/footer/app.footer";
 import NextAuthWrapper from "@/lib/next.auth.wrapper";
+import { ToastProvider } from "./utils/toast";
 
 export default function RootLayout({
   children,
@@ -15,7 +16,9 @@ export default function RootLayout({
         <ThemeRegistry>
           <NextAuthWrapper>
             {/* <AppHeader /> */}
-            {children}
+            <ToastProvider>
+              {children}
+            </ToastProvider>
             {/* <AppFooter /> */}
           </NextAuthWrapper>
         </ThemeRegistry>

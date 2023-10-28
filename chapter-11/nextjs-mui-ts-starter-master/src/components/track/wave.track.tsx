@@ -79,9 +79,8 @@ const WaveTrack = (props: any) => {
                progressColor: progressGradient,
                barWidth: 3,
                waveColor: gradient,
-               // url: `/api?audio=${fileName}`,
+               url: `/api?audio=${fileName}`,
                height: 100,
-               url: "http://localhost:3000/audio/hoidanit.mp3"
           };
      }, []); // lưu lại giá trị value chỉ render 1 lần. biến số không thay đổi cho dù render bao nhiêu lần.
 
