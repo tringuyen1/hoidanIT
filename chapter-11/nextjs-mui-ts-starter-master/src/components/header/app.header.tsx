@@ -140,7 +140,7 @@ export default function AppHeader() {
                          },
                     }}
                >
-                    <Link href={"/profile"}>Profile</Link>
+                    <Link href={`/profile/${session?.user._id}`}>Profile</Link>
                </MenuItem>
                <MenuItem onClick={() => {
                     handleMenuClose();
