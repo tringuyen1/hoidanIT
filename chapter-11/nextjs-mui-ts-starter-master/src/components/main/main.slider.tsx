@@ -100,7 +100,7 @@ const MainSlider = (props: IProps) => {
                 alt=""
               ></img>
               <Link
-                href={`/track/${song._id}?audio=${song.trackUrl}`}
+                href={`/track/${song._id}?audio=${song.trackUrl}&id=${song._id}`}
                 style={{ color: "unset", textDecoration: "none" }}
               >
                 <h4>{song.title}</h4>

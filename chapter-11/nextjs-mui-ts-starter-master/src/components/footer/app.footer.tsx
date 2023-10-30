@@ -59,7 +59,7 @@ const AppFooter = () => {
                         minWidth: 100
                     }}>
                         <div style={{ color: "#ccc" }}>
-                            author
+                            music
                         </div>
                         <div style={{ color: "black" }}>
                             {currentTrack.title}

@@ -11,6 +11,7 @@ import { Box, useTheme } from '@mui/material';
 import { useTrackContext } from '@/lib/track.wrapper';
 import { useHasMounted } from '@/app/utils/customHook';
 import PauseIcon from '@mui/icons-material/Pause';
+import Link from "next/link";
 
 interface profileTracks {
      data: any
@@ -31,12 +32,15 @@ const ProfileTrack = (props: profileTracks) => {
 
      return (
           <>
-               <Card sx={{ display: 'flex', width: "100%", justifyContent: "space-between", }}>
+               <Card sx={{ display: 'flex', width: "100%", justifyContent: "space-between", }} key={data._id}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                          <CardContent sx={{ flex: '1 0 auto' }}>
-                              <Typography component="div" variant="h5">
-                                   {data.title}
-                              </Typography>
+                              <Link href={`/track/${data._id}?audio=${data.trackUrl}&id=${data._id}`} style={{ textDecoration: "none", color: "unset", cursor: "pointer" }}>
+                                   <Typography component="div" variant="h5">
+                                        {data.title}
+                                   </Typography>
+                              </Link>
+
                               <Typography variant="subtitle1" color="text.secondary" component="div">
                                    {data.description}
                               </Typography>

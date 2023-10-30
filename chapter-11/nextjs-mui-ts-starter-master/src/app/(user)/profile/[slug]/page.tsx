@@ -1,5 +1,3 @@
-"use client"
-
 import { sendRequest } from "@/app/utils/api";
 import { Box, Container, Grid } from "@mui/material";
 import ProfileTrack from "@/components/profile/profile-track";
@@ -29,7 +27,6 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
                                              alignItems: "center",
                                              gap: "10px"
                                         }}
-                                        key={item._id}
                                    >
                                         <ProfileTrack data={item} />
                                    </Grid>

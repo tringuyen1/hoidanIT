@@ -1,4 +1,4 @@
-"use Client";
+"use client";
 
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
@@ -9,7 +9,12 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import "./wave.scss";
 
-const WaveTrack = (props: any) => {
+interface IProps {
+     track: ITrackTop | null
+}
+
+const WaveTrack = (props: IProps) => {
+     const { track } = props;
      const [isPlaying, setIsPlaying] = useState(false);
      const containerRef = useRef<HTMLDivElement>(null);
      const [time, setTime] = useState<string>("0:00");
@@ -192,7 +197,7 @@ const WaveTrack = (props: any) => {
                                         color: "white"
                                    }}
                                    >
-                                        Author
+                                        {track?.title}
                                    </div>
                               </div>
                          </div>
@@ -213,7 +218,7 @@ const WaveTrack = (props: any) => {
                               <div className="comments" style={{ position: "relative" }}>
                                    {
                                         arrComments.map(item => (
-                                             <Tooltip title={item.user} arrow>
+                                             <Tooltip title={item.user} arrow key={item.id}>
                                                   <img
                                                        onPointerMove={() => {
                                                             const hover = hoverRef.current!;
@@ -244,15 +249,10 @@ const WaveTrack = (props: any) => {
                               alignItems: "center"
                          }}
                     >
-                         <div style={{
-                              background: "#ccc",
-                              width: 250,
-                              height: 250
-                         }}>
-                         </div>
+                         <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="" style={{ height: 250, width: 250 }}></img>
                     </div>
                </div>
-          </div >
+          </div>
      );
 };
 
