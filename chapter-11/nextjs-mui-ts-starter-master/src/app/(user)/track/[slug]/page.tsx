@@ -10,10 +10,21 @@ const DetailTrackPage = async (props: any) => {
           method: "GET"
      });
 
+     const comments = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
+          url: "http://localhost:8000/api/v1/tracks/comments",
+          method: "POST",
+          queryParams: {
+               current: 1,
+               pageSize: 100,
+               trackId: params.slug,
+               sort: "-createAt"
+          }
+     })
+
      return (
           <>
                <Container>
-                    <WaveTrack track={tracks?.data ?? null} />
+                    <WaveTrack track={tracks?.data ?? null} trackComment={comments?.data?.result ?? null} />
                </Container>
           </>
      );

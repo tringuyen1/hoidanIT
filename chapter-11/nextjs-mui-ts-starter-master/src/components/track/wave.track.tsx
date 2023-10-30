@@ -12,11 +12,12 @@ import { useTrackContext } from "@/lib/track.wrapper";
 
 interface IProps {
      track: ITrackTop | null
+     trackComment: ITrackComment | null
 }
 
 const WaveTrack = (props: IProps) => {
      const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
-     const { track } = props;
+     const { track, trackComment } = props;
      const [isPlaying, setIsPlaying] = useState(false);
      const containerRef = useRef<HTMLDivElement>(null);
      const [time, setTime] = useState<string>("0:00");
@@ -24,31 +25,6 @@ const WaveTrack = (props: IProps) => {
      const hoverRef = useRef<HTMLDivElement>(null);
      const searchParams = useSearchParams();
      const fileName = searchParams.get("audio");
-
-     const arrComments = [
-          {
-               id: 1,
-               avatar: "http://localhost:8000/images/chill1.png",
-               moment: 10,
-               user: "username 1",
-               content: "just a comment1"
-          },
-          {
-               id: 2,
-               avatar: "http://localhost:8000/images/chill1.png",
-               moment: 30,
-               user: "username 2",
-               content: "just a comment3"
-          },
-          {
-               id: 3,
-               avatar: "http://localhost:8000/images/chill1.png",
-               moment: 50,
-               user: "username 3",
-               content: "just a comment3"
-          },
-     ]
-
 
      const formatTime = (seconds: number) => {
           const minutes = Math.floor(seconds / 60)
@@ -239,7 +215,8 @@ const WaveTrack = (props: IProps) => {
                                         ></div>
                                         <div className="comments" style={{ position: "relative" }}>
                                              {
-                                                  arrComments.map(item => (
+                                                  // @ts-ignore
+                                                  trackComment?.map((item: any) => (
                                                        <Tooltip title={item.user} arrow key={item.id}>
                                                             <img
                                                                  onPointerMove={() => {
