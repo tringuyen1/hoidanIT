@@ -12,18 +12,16 @@ const AppFooter = () => {
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
     const playerRef = useRef(null);
 
-    useEffect(() => {
-        // @ts-ignore
-        if (playerRef?.current?.audio?.current) {
-            if (currentTrack.isPlaying) {
-                // @ts-ignore
-                playerRef.current?.audio?.current.play();
-            } else {
-                // @ts-ignore
-                playerRef.current?.audio?.current.pause();
-            }
+    // @ts-ignore
+    if (playerRef?.current?.audio?.current) {
+        if (currentTrack.isPlaying) {
+            // @ts-ignore
+            playerRef.current?.audio?.current.play();
+        } else {
+            // @ts-ignore
+            playerRef.current?.audio?.current.pause();
         }
-    }, [currentTrack])
+    }
 
     return (
         <div style={{ marginTop: "50px" }}>
