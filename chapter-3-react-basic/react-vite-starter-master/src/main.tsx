@@ -3,108 +3,119 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import {
-  createBrowserRouter,
-  Link,
-  Outlet,
-  RouterProvider,
+     createBrowserRouter,
+     Link,
+     Outlet,
+     RouterProvider,
 } from "react-router-dom";
 import UsersPage from "./screens/users.page.tsx";
 import {
-  HomeOutlined,
-  UserSwitchOutlined,
-  UploadOutlined,
+     HomeOutlined,
+     UserSwitchOutlined,
+     UploadOutlined,
+     CommentOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import TrackPage from "./screens/tracks.page.tsx";
+import CommentPage from "./screens/comments.page.tsx";
 
 const items: MenuProps["items"] = [
-  {
-    label: <Link to={"/"}>Home</Link>,
-    key: "Home",
-    icon: <HomeOutlined />,
-  },
-  {
-    label: <Link to={"/users"}>Manage Users</Link>,
-    key: "users",
-    icon: <UserSwitchOutlined />,
-  },
-  {
-    label: <Link to={"/tracks"}>Manage Tracks</Link>,
-    key: "tracks",
-    icon: <UploadOutlined />,
-  },
+     {
+          label: <Link to={"/"}>Home</Link>,
+          key: "Home",
+          icon: <HomeOutlined />,
+     },
+     {
+          label: <Link to={"/users"}>Manage Users</Link>,
+          key: "users",
+          icon: <UserSwitchOutlined />,
+     },
+     {
+          label: <Link to={"/tracks"}>Manage Tracks</Link>,
+          key: "tracks",
+          icon: <UploadOutlined />,
+     },
+     {
+          label: <Link to={"/comments"}>Manage Comments</Link>,
+          key: "comments",
+          icon: <CommentOutlined />,
+     },
 ];
 
 const Header: React.FC = () => {
-  const [current, setCurrent] = useState("Home");
+     const [current, setCurrent] = useState("Home");
 
-  const onClick: MenuProps["onClick"] = (e) => {
-    setCurrent(e.key);
-  };
+     const onClick: MenuProps["onClick"] = (e) => {
+          setCurrent(e.key);
+     };
 
-  return (
-    <div className="container">
-      <Menu
-        onClick={onClick}
-        selectedKeys={[current]}
-        mode="horizontal"
-        items={items}
-      />
-    </div>
-  );
+     return (
+          <div className="container">
+               <Menu
+                    onClick={onClick}
+                    selectedKeys={[current]}
+                    mode="horizontal"
+                    items={items}
+               />
+          </div>
+     );
 };
 
 const LayoutAdmin = () => {
-  const getData = async () => {
-    const res = await fetch("http://localhost:8000/api/v1/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: "test23@gmail.com",
-        password: "123456",
-      }),
-    });
-    const data = await res.json();
-    if (data.data) {
-      localStorage.setItem("access_token", data.data.access_token);
-    }
-  };
+     const getData = async () => {
+          const res = await fetch("http://localhost:8000/api/v1/auth/login", {
+               method: "POST",
+               headers: {
+                    "Content-Type": "application/json",
+               },
+               body: JSON.stringify({
+                    username: "test23@gmail.com",
+                    password: "123456",
+               }),
+          });
+          const data = await res.json();
+          if (data.data) {
+               localStorage.setItem("access_token", data.data.access_token);
+          }
+     };
 
-  useEffect(() => {
-    getData();
-  }, []);
+     useEffect(() => {
+          getData();
+     }, []);
 
-  return (
-    <div>
-      <Header />
-      <Outlet />
-    </div>
-  );
+     return (
+          <div>
+               <Header />
+               <Outlet />
+          </div>
+     );
 };
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LayoutAdmin />,
-    children: [
-      { index: true, element: <App /> },
-      {
-        path: "users",
-        element: <UsersPage />,
-      },
-      {
-        path: "/tracks",
-        element: <TrackPage />,
-      },
-    ],
-  },
+     {
+          path: "/",
+          element: <LayoutAdmin />,
+          children: [
+               { index: true, element: <App /> },
+               {
+                    path: "users",
+                    element: <UsersPage />,
+               },
+               {
+                    path: "/tracks",
+                    element: <TrackPage />,
+               },
+               {
+                    path: "/comments",
+                    element: <CommentPage />
+               },
+          ],
+     },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+     <React.StrictMode>
+          <RouterProvider router={router} />
+     </React.StrictMode>
 );
