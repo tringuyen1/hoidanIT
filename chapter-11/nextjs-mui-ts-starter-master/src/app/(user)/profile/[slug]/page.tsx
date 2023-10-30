@@ -21,7 +21,19 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
                <Box sx={{ flex: 1, marginTop: "15px" }}>
                     <Container>
                          <Grid container spacing={2}>
-                              <ProfileTrack data={data} />
+                              {data && data.map((item: any) => (
+                                   <Grid item xs={6} md={6}
+                                        sx={{
+                                             display: "flex",
+                                             flexDirection: "column",
+                                             alignItems: "center",
+                                             gap: "10px"
+                                        }}
+                                        key={item._id}
+                                   >
+                                        <ProfileTrack data={item} />
+                                   </Grid>
+                              ))}
                          </Grid>
                     </Container>
                </Box>

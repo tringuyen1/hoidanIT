@@ -24,21 +24,15 @@ const initValue = {
      isPlaying: false
 }
 
-export const TrackContext = createContext({})
+export const TrackContext = createContext<ITrackContext | null>(null)
 
 export const TrackContextProvider = ({ children }: { children: React.ReactNode; }) => {
-     const [currentTrack, setCurrentTrack] = useState(initValue)
 
-     const tempValue = {
-          currentTrack,
-          setCurrentTrack
-     }
-
-
+     const [currentTrack, setCurrentTrack] = useState<IShareTrack>(initValue)
 
      return (
           <>
-               <TrackContext.Provider value={tempValue} >
+               <TrackContext.Provider value={{ currentTrack, setCurrentTrack }} >
                     {children}
                </TrackContext.Provider >
           </>

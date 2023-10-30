@@ -4,15 +4,14 @@ import AppBar from '@mui/material/AppBar';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import Container from "@mui/material/Container";
-import { useContext } from 'react';
 import { TrackContext, useTrackContext } from '@/lib/track.wrapper';
 
 
 const AppFooter = () => {
-    const { currentTrack, setcurrentTrack } = useTrackContext() as ITrackContext
+    const { currentTrack } = useTrackContext() as ITrackContext
 
 
-    console.log(currentTrack)
+    console.log(">>>> check:", currentTrack)
 
     return (
         <div style={{ marginTop: "50px" }}>
@@ -24,7 +23,7 @@ const AppFooter = () => {
                     }
                 }}>
                     <AudioPlayer
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`} // show song mp3
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`} // show song mp3
                         volume={0.5}
                         style={{ boxShadow: "unset", backgroundColor: "#f2f2f2" }}
                         layout='horizontal-reverse'
@@ -41,7 +40,7 @@ const AppFooter = () => {
                             author
                         </div>
                         <div style={{ color: "black" }}>
-                            Who am I ?
+                            {currentTrack.title}
                         </div>
                     </div>
                 </Container>

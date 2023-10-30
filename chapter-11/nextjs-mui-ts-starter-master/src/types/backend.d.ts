@@ -70,6 +70,6 @@ declare global {
 
     interface ITrackContext {
         currentTrack: IShareTrack,
-        setcurrentTrack: (v: IShareTrack) => void
+        setCurrentTrack: (v: IShareTrack) => void
     }
 }
