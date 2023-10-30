@@ -9,10 +9,11 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import "./wave.scss";
 import { useTrackContext } from "@/lib/track.wrapper";
+import { fecthDefaultImages } from "@/app/utils/api";
 
 interface IProps {
      track: ITrackTop | null
-     trackComment: ITrackComment | null
+     trackComment: any
 }
 
 const WaveTrack = (props: IProps) => {
@@ -231,7 +232,7 @@ const WaveTrack = (props: IProps) => {
                                                                       left: callLeft(item.moment),
                                                                       zIndex: 20
                                                                  }}
-                                                                 src="http://localhost:3000/audio/chill1.png" />
+                                                                 src={fecthDefaultImages(item.user.type)} />
                                                        </Tooltip>
 
                                                   ))
@@ -248,7 +249,15 @@ const WaveTrack = (props: IProps) => {
                                         alignItems: "center"
                                    }}
                               >
-                                   <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="" style={{ height: 250, width: 250 }}></img>
+                                   {
+                                        track.imgUrl ? (
+                                             <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="" style={{ height: 250, width: 250 }}></img>
+                                        ) : (
+                                             <div className="" style={{ width: 250, height: 250, background: "#ccc" }}>
+                                             </div>
+                                        )
+                                   }
+
                               </div>
                          </div>
                     )
