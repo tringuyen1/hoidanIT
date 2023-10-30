@@ -5,13 +5,23 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import Container from "@mui/material/Container";
 import { TrackContext, useTrackContext } from '@/lib/track.wrapper';
+import { useRef } from 'react';
 
 
 const AppFooter = () => {
-    const { currentTrack } = useTrackContext() as ITrackContext
+    const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
+    const playerRef = useRef(null);
 
-
-    console.log(">>>> check:", currentTrack)
+    // @ts-ignore
+    if (playerRef?.current?.audio?.current) {
+        if (currentTrack.isPlaying) {
+            // @ts-ignore
+            playerRef.current?.audio?.current.play();
+        } else {
+            // @ts-ignore
+            playerRef.current?.audio?.current.pause();
+        }
+    }
 
     return (
         <div style={{ marginTop: "50px" }}>
@@ -23,10 +33,22 @@ const AppFooter = () => {
                     }
                 }}>
                     <AudioPlayer
+                        ref={playerRef}
                         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`} // show song mp3
                         volume={0.5}
                         style={{ boxShadow: "unset", backgroundColor: "#f2f2f2" }}
                         layout='horizontal-reverse'
+                        loop={currentTrack.isPlaying}
+                        onPlay={() => {
+                            setCurrentTrack({
+                                ...currentTrack, isPlaying: true
+                            })
+                        }}
+                        onPause={() => {
+                            setCurrentTrack({
+                                ...currentTrack, isPlaying: false
+                            })
+                        }}
                     />
 
                     <div className='' style={{

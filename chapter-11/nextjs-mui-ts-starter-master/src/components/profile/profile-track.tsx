@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
-import { Box, Grid, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useTrackContext } from '@/lib/track.wrapper';
 import { useHasMounted } from '@/app/utils/customHook';
 import PauseIcon from '@mui/icons-material/Pause';
