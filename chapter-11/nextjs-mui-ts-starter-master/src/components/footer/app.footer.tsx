@@ -5,23 +5,25 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import Container from "@mui/material/Container";
 import { TrackContext, useTrackContext } from '@/lib/track.wrapper';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 
 const AppFooter = () => {
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext
     const playerRef = useRef(null);
 
-    // @ts-ignore
-    if (playerRef?.current?.audio?.current) {
-        if (currentTrack.isPlaying) {
-            // @ts-ignore
-            playerRef.current?.audio?.current.play();
-        } else {
-            // @ts-ignore
-            playerRef.current?.audio?.current.pause();
+    useEffect(() => {
+        // @ts-ignore
+        if (playerRef?.current?.audio?.current) {
+            if (currentTrack.isPlaying) {
+                // @ts-ignore
+                playerRef.current?.audio?.current.play();
+            } else {
+                // @ts-ignore
+                playerRef.current?.audio?.current.pause();
+            }
         }
-    }
+    }, [currentTrack])
 
     return (
         <div style={{ marginTop: "50px" }}>

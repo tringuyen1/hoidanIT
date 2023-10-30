@@ -8,12 +8,14 @@ import Tooltip from '@mui/material/Tooltip';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import "./wave.scss";
+import { useTrackContext } from "@/lib/track.wrapper";
 
 interface IProps {
      track: ITrackTop | null
 }
 
 const WaveTrack = (props: IProps) => {
+     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
      const { track } = props;
      const [isPlaying, setIsPlaying] = useState(false);
      const containerRef = useRef<HTMLDivElement>(null);
@@ -121,7 +123,6 @@ const WaveTrack = (props: IProps) => {
      const onPlayClick = useCallback(() => {
           if (waveSurfer) {
                waveSurfer.isPlaying() ? waveSurfer.pause() : waveSurfer.play();
-               setIsPlaying(waveSurfer.isPlaying());
           }
      }, [waveSurfer]); // lưu lại 1 function
 
@@ -132,127 +133,150 @@ const WaveTrack = (props: IProps) => {
           return `${percent}%`;
      }
 
+     // in footer
+     useEffect(() => {
+          if (waveSurfer && currentTrack.isPlaying) {
+               waveSurfer.pause();
+          }
+     }, [currentTrack]);
+
+
+     useEffect(() => {
+          if (track?._id && !currentTrack._id) {
+               setCurrentTrack({ ...track, isPlaying: false });
+          }
+     }, [track]);
+
+
      return (
           <div style={{ marginTop: 20 }}>
-               <div
-                    style={{
-                         display: "flex",
-                         gap: 15,
-                         padding: 20,
-                         height: 400,
-                         background: "linear-gradient(135deg, rgb(106, 112, 67) 0%, rgb(11, 15, 20) 100%)"
-                    }}
-               >
-                    <div className="left"
-                         style={{
-                              width: "75%",
-                              height: "calc(100% - 10px)",
-                              display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "space-between"
-                         }}
-                    >
-                         <div className="info" style={{ display: "flex" }}>
-                              <div>
-                                   <div
-                                        onClick={() => onPlayClick()}
-                                        style={{
-                                             borderRadius: "50%",
-                                             background: "#f50",
-                                             height: "50px",
-                                             width: "50px",
-                                             display: "flex",
-                                             alignItems: "center",
-                                             justifyContent: "center",
-                                             cursor: "pointer"
-                                        }}
-                                   >
-                                        {isPlaying === true ?
-                                             <PauseIcon
-                                                  sx={{ fontSize: 30, color: "white" }}
-                                             />
-                                             :
-                                             <PlayArrowIcon
-                                                  sx={{ fontSize: 30, color: "white" }}
-                                             />
-                                        }
-                                   </div>
-                              </div>
-                              <div style={{ marginLeft: 20 }}>
-                                   <div style={{
-                                        padding: "0 5px",
-                                        background: "#333",
-                                        fontSize: 30,
-                                        width: "fit-content",
-                                        color: "white"
-                                   }}>
-                                        Song
-                                   </div>
-                                   <div style={{
-                                        padding: "0 5px",
-                                        marginTop: 10,
-                                        background: "#333",
-                                        fontSize: 20,
-                                        width: "fit-content",
-                                        color: "white"
-                                   }}
-                                   >
-                                        {track?.title}
-                                   </div>
-                              </div>
-                         </div>
-                         <div ref={containerRef} className="wave-form-container">
-                              <div className="time" >{time}</div>
-                              <div className="duration" >{duration}</div>
-                              <div ref={hoverRef} className="hover-wave"></div>
-                              <div className="overlay"
+               {
+                    track && (
+                         <div
+                              style={{
+                                   display: "flex",
+                                   gap: 15,
+                                   padding: 20,
+                                   height: 400,
+                                   background: "linear-gradient(135deg, rgb(106, 112, 67) 0%, rgb(11, 15, 20) 100%)"
+                              }}
+                         >
+                              <div className="left"
                                    style={{
-                                        position: "absolute",
-                                        height: "30px",
-                                        width: "100%",
-                                        bottom: "0",
-                                        // background: "#ccc"
-                                        backdropFilter: "brightness(0.5)"
+                                        width: "75%",
+                                        height: "calc(100% - 10px)",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "space-between"
                                    }}
-                              ></div>
-                              <div className="comments" style={{ position: "relative" }}>
-                                   {
-                                        arrComments.map(item => (
-                                             <Tooltip title={item.user} arrow key={item.id}>
-                                                  <img
-                                                       onPointerMove={() => {
-                                                            const hover = hoverRef.current!;
-                                                            hover.style.width = callLeft(item.moment)
-                                                       }}
-                                                       style={{
-                                                            height: 20,
-                                                            width: 20,
-                                                            position: "absolute",
-                                                            top: 70,
-                                                            left: callLeft(item.moment),
-                                                            zIndex: 20
-                                                       }}
-                                                       src="http://localhost:3000/audio/chill1.png" />
-                                             </Tooltip>
+                              >
+                                   <div className="info" style={{ display: "flex" }}>
+                                        <div>
+                                             <div
+                                                  onClick={() => {
+                                                       onPlayClick();
+                                                       if (waveSurfer)
+                                                            setCurrentTrack({ ...track, isPlaying: false })
+                                                  }}
+                                                  style={{
+                                                       borderRadius: "50%",
+                                                       background: "#f50",
+                                                       height: "50px",
+                                                       width: "50px",
+                                                       display: "flex",
+                                                       alignItems: "center",
+                                                       justifyContent: "center",
+                                                       cursor: "pointer"
+                                                  }}
+                                             >
+                                                  {isPlaying === true ?
+                                                       <PauseIcon
+                                                            sx={{ fontSize: 30, color: "white" }}
+                                                       />
+                                                       :
+                                                       <PlayArrowIcon
+                                                            sx={{ fontSize: 30, color: "white" }}
+                                                       />
+                                                  }
+                                             </div>
+                                        </div>
+                                        <div style={{ marginLeft: 20 }}>
+                                             <div style={{
+                                                  padding: "0 5px",
+                                                  background: "#333",
+                                                  fontSize: 30,
+                                                  width: "fit-content",
+                                                  color: "white"
+                                             }}>
+                                                  Song
+                                             </div>
+                                             <div style={{
+                                                  padding: "0 5px",
+                                                  marginTop: 10,
+                                                  background: "#333",
+                                                  fontSize: 20,
+                                                  width: "fit-content",
+                                                  color: "white"
+                                             }}
+                                             >
+                                                  {track?.title}
+                                             </div>
+                                        </div>
+                                   </div>
+                                   <div ref={containerRef} className="wave-form-container">
+                                        <div className="time" >{time}</div>
+                                        <div className="duration" >{duration}</div>
+                                        <div ref={hoverRef} className="hover-wave"></div>
+                                        <div className="overlay"
+                                             style={{
+                                                  position: "absolute",
+                                                  height: "30px",
+                                                  width: "100%",
+                                                  bottom: "0",
+                                                  // background: "#ccc"
+                                                  backdropFilter: "brightness(0.5)"
+                                             }}
+                                        ></div>
+                                        <div className="comments" style={{ position: "relative" }}>
+                                             {
+                                                  arrComments.map(item => (
+                                                       <Tooltip title={item.user} arrow key={item.id}>
+                                                            <img
+                                                                 onPointerMove={() => {
+                                                                      const hover = hoverRef.current!;
+                                                                      hover.style.width = callLeft(item.moment)
+                                                                 }}
+                                                                 style={{
+                                                                      height: 20,
+                                                                      width: 20,
+                                                                      position: "absolute",
+                                                                      top: 70,
+                                                                      left: callLeft(item.moment),
+                                                                      zIndex: 20
+                                                                 }}
+                                                                 src="http://localhost:3000/audio/chill1.png" />
+                                                       </Tooltip>
 
-                                        ))
-                                   }
+                                                  ))
+                                             }
 
+                                        </div>
+                                   </div>
+                              </div>
+                              <div className="right"
+                                   style={{
+                                        width: "25%",
+                                        padding: 15,
+                                        display: "flex",
+                                        alignItems: "center"
+                                   }}
+                              >
+                                   <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="" style={{ height: 250, width: 250 }}></img>
                               </div>
                          </div>
-                    </div>
-                    <div className="right"
-                         style={{
-                              width: "25%",
-                              padding: 15,
-                              display: "flex",
-                              alignItems: "center"
-                         }}
-                    >
-                         <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="" style={{ height: 250, width: 250 }}></img>
-                    </div>
-               </div>
-          </div>
+                    )
+               }
+          </div >
      );
 };
 
