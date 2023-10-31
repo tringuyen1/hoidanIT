@@ -24,50 +24,57 @@ const AppFooter = () => {
     }
 
     return (
-        <div style={{ marginTop: "50px" }}>
-            <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, backgroundColor: "#f2f2f2" }}>
-                <Container sx={{
-                    display: "flex", gap: 10,
-                    ".rhap_main": {
-                        gap: "30px"
-                    }
-                }}>
-                    <AudioPlayer
-                        ref={playerRef}
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`} // show song mp3
-                        volume={0.5}
-                        style={{ boxShadow: "unset", backgroundColor: "#f2f2f2" }}
-                        layout='horizontal-reverse'
-                        loop={currentTrack.isPlaying}
-                        onPlay={() => {
-                            setCurrentTrack({
-                                ...currentTrack, isPlaying: true
-                            })
-                        }}
-                        onPause={() => {
-                            setCurrentTrack({
-                                ...currentTrack, isPlaying: false
-                            })
-                        }}
-                    />
+        <>
+            {
+                currentTrack._id && (
+                    <div style={{ marginTop: "50px" }}>
+                        <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, backgroundColor: "#f2f2f2" }}>
+                            <Container sx={{
+                                display: "flex", gap: 10,
+                                ".rhap_main": {
+                                    gap: "30px"
+                                }
+                            }}>
+                                <AudioPlayer
+                                    ref={playerRef}
+                                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`} // show song mp3
+                                    volume={0.5}
+                                    style={{ boxShadow: "unset", backgroundColor: "#f2f2f2" }}
+                                    layout='horizontal-reverse'
+                                    loop={currentTrack.isPlaying}
+                                    onPlay={() => {
+                                        setCurrentTrack({
+                                            ...currentTrack, isPlaying: true
+                                        })
+                                    }}
+                                    onPause={() => {
+                                        setCurrentTrack({
+                                            ...currentTrack, isPlaying: false
+                                        })
+                                    }}
+                                />
 
-                    <div className='' style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "start",
-                        minWidth: 100
-                    }}>
-                        <div style={{ color: "#ccc" }}>
-                            music
-                        </div>
-                        <div style={{ color: "black" }}>
-                            {currentTrack.title}
-                        </div>
+                                <div className='' style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                    alignItems: "start",
+                                    minWidth: 100
+                                }}>
+                                    <div style={{ color: "#ccc" }}>
+                                        music
+                                    </div>
+                                    <div style={{ color: "black" }}>
+                                        {currentTrack.title}
+                                    </div>
+                                </div>
+                            </Container>
+                        </AppBar>
                     </div>
-                </Container>
-            </AppBar>
-        </div>
+                )
+            }
+        </>
+
     )
 }
 

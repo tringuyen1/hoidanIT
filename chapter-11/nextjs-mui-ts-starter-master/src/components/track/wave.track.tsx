@@ -10,6 +10,7 @@ import PauseIcon from '@mui/icons-material/Pause';
 import "./wave.scss";
 import { useTrackContext } from "@/lib/track.wrapper";
 import { fecthDefaultImages } from "@/app/utils/api";
+import CommentTrack from "./comment.track";
 
 interface IProps {
      track: ITrackTop | null
@@ -262,6 +263,7 @@ const WaveTrack = (props: IProps) => {
                          </div>
                     )
                }
+               <CommentTrack trackComment={trackComment} track={track} />
           </div >
      );
 };
