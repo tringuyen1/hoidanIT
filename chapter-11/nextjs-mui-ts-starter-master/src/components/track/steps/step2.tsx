@@ -219,7 +219,7 @@ const Step2 = (props: IProps) => {
                                         })
                                     }}
                                     id="standard-basic"
-                                    label="Description" variant="standard" fullWidth margin="dense"
+                                    label="Author" variant="standard" fullWidth margin="dense"
                                 />
                                 <TextField
                                     value={info?.category}

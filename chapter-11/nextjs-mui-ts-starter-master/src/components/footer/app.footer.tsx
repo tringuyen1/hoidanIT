@@ -61,10 +61,10 @@ const AppFooter = () => {
                                     alignItems: "start",
                                     minWidth: 100
                                 }}>
-                                    <div style={{ color: "#ccc" }}>
-                                        music
+                                    <div style={{ color: "#ccc", textOverflow: "ellipsis", whiteSpace: "nowrap", textTransform: "capitalize" }}>
+                                        {currentTrack.description}
                                     </div>
-                                    <div style={{ color: "black" }}>
+                                    <div style={{ color: "black", textOverflow: "ellipsis", whiteSpace: "nowrap", textTransform: "capitalize" }}>
                                         {currentTrack.title}
                                     </div>
                                 </div>

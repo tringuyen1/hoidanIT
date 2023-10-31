@@ -106,7 +106,7 @@ const WaveTrack = (props: IProps) => {
 
 
      const callLeft = (moment: number) => {
-          const handleCoreDuration = 199;
+          const handleCoreDuration = waveSurfer?.getDuration() ?? 0;
           const percent = (moment / handleCoreDuration) * 100;
           return `${percent}%`;
      }
@@ -186,7 +186,7 @@ const WaveTrack = (props: IProps) => {
                                                   width: "fit-content",
                                                   color: "white"
                                              }}>
-                                                  Song
+                                                  {track.description}
                                              </div>
                                              <div style={{
                                                   padding: "0 5px",
@@ -194,7 +194,8 @@ const WaveTrack = (props: IProps) => {
                                                   background: "#333",
                                                   fontSize: 20,
                                                   width: "fit-content",
-                                                  color: "white"
+                                                  color: "white",
+                                                  textTransform: "capitalize"
                                              }}
                                              >
                                                   {track?.title}
@@ -263,7 +264,7 @@ const WaveTrack = (props: IProps) => {
                          </div>
                     )
                }
-               <CommentTrack trackComment={trackComment} track={track} />
+               <CommentTrack trackComment={trackComment} track={track} waveSurfer={waveSurfer} />
           </div >
      );
 };
