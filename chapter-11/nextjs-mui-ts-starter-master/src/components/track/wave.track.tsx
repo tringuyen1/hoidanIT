@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useWaveSurfer } from "@/app/utils/customHook";
 import { WaveSurferOptions } from "waveSurfer.js";
 import Tooltip from '@mui/material/Tooltip';
@@ -9,8 +9,9 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import "./wave.scss";
 import { useTrackContext } from "@/lib/track.wrapper";
-import { fecthDefaultImages } from "@/app/utils/api";
+import { fecthDefaultImages, sendRequest } from "@/app/utils/api";
 import CommentTrack from "./comment.track";
+import { useSession } from "next-auth/react";
 
 interface IProps {
      track: ITrackTop | null
@@ -26,6 +27,9 @@ const WaveTrack = (props: IProps) => {
      const [duration, setDuration] = useState<string>("0:00");
      const hoverRef = useRef<HTMLDivElement>(null);
      const searchParams = useSearchParams();
+     const { data: session } = useSession();
+     const router = useRouter()
+     const viewRef = useRef(true);
      const fileName = searchParams.get("audio");
 
      const formatTime = (seconds: number) => {
@@ -125,6 +129,24 @@ const WaveTrack = (props: IProps) => {
           }
      }, [track]);
 
+     const handleIncreaseCount = async () => {
+          if (viewRef.current) {
+               const res = await sendRequest<IBackendRes<IModelPaginate<ITrackLikes>>>({
+                    url: "http://localhost:8000/api/v1/tracks/increase-view",
+                    method: "POST",
+                    body: {
+                         trackId: track?._id,
+                    },
+                    headers: {
+                         Authorization: `Bearer ${session?.access_token}`,
+                    }
+               });
+
+               router.refresh();
+               viewRef.current = false;
+          }
+
+     }
 
      return (
           <div style={{ marginTop: 20 }}>
@@ -153,6 +175,7 @@ const WaveTrack = (props: IProps) => {
                                              <div
                                                   onClick={() => {
                                                        onPlayClick();
+                                                       handleIncreaseCount()
                                                        if (waveSurfer)
                                                             setCurrentTrack({ ...track, isPlaying: false })
                                                   }}
