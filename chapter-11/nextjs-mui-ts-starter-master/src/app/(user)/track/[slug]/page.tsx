@@ -3,12 +3,39 @@ import WaveTrack from "@/components/track/wave.track";
 import Container from "@mui/material/Container";
 // import { useSearchParams } from "next/navigation"; // get params vd: ?ad=id
 // get params
+
+import type { Metadata, ResolvingMetadata } from 'next'
+
+type Props = {
+     params: { slug: string }
+     searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function generateMetadata(
+     { params, searchParams }: Props,
+     parent: ResolvingMetadata
+): Promise<Metadata> {
+     // read route params
+     const slug = params.slug
+
+     const res = await sendRequest<IBackendRes<ITrackTop>>({
+          url: `http://localhost:8000/api/v1/tracks/${slug}`,
+          method: "GET",
+          nextOption: { cache: "no-store" }
+     });
+
+     return {
+          title: res.data?.title
+     }
+}
+
+export function Page({ params, searchParams }: Props) { }
+
 const DetailTrackPage = async (props: any) => {
      const { params } = props;
      const tracks = await sendRequest<IBackendRes<ITrackTop>>({
           url: `http://localhost:8000/api/v1/tracks/${params.slug}`,
-          method: "GET",
-          nextOption: { cache: "no-store" }
+          method: "GET"
      });
 
      const comments = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
