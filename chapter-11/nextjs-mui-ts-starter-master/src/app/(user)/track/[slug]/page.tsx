@@ -36,8 +36,6 @@ export async function generateMetadata(
      }
 }
 
-export function Page({ params, searchParams }: Props) { }
-
 const DetailTrackPage = async (props: any) => {
      const { params } = props;
      const tracks = await sendRequest<IBackendRes<ITrackTop>>({
