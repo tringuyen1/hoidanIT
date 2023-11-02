@@ -31,7 +31,7 @@ export async function generateMetadata(
                title: 'Hỏi Dân IT',
                description: 'Beyond Your Coding Skills',
                type: 'website',
-               images: [`https://raw.githubusercontent.com/hoidanit/imageshosting/master/eric.png`],
+               images: [`https://icons.iconarchive.com/icons/danleech/simple/256/soundcloud-icon.png`],
           }
      }
 }
