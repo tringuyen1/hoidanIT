@@ -10,6 +10,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Divider from "@mui/material/Divider";
 import { useHasMounted } from "@/app/utils/customHook";
 import { convertSlugUrl } from "@/app/utils/api";
+import Image from "next/image";
 
 export interface IProps {
   data: ITrackTop[];
@@ -95,11 +96,19 @@ const MainSlider = (props: IProps) => {
       <Slider {...settings}>
         {data &&
           data.map((song) => (
-            <div className="track" key={song._id}>
-              <img
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${song.imgUrl}`}
-                alt=""
-              ></img>
+            <div className="track" key={song._id} >
+              <div className="imgaes-track" style={{ position: "relative", width: "100%", height: "150px" }}>
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${song.imgUrl}`}
+                  alt=""
+                  // width={500}
+                  // height={500}
+                  fill
+                  style={{
+                    objectFit: 'cover', // cover, contain, none
+                  }}
+                ></Image>
+              </div>
               <Link
                 href={`/track/${convertSlugUrl(song.title)}-${song._id}.html?audio=${song.trackUrl}`}
                 style={{ color: "unset", textDecoration: "none" }}
