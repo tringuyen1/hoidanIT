@@ -12,6 +12,7 @@ import { useTrackContext } from "@/lib/track.wrapper";
 import { fecthDefaultImages, sendRequest } from "@/app/utils/api";
 import CommentTrack from "./comment.track";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 interface IProps {
      track: ITrackTop | null
@@ -244,20 +245,22 @@ const WaveTrack = (props: IProps) => {
                                                   // @ts-ignore
                                                   trackComment?.map((item: any) => (
                                                        <Tooltip title={item.user} arrow key={item.id}>
-                                                            <img
+                                                            <Image
                                                                  onPointerMove={() => {
                                                                       const hover = hoverRef.current!;
                                                                       hover.style.width = callLeft(item.moment)
                                                                  }}
                                                                  style={{
-                                                                      height: 20,
-                                                                      width: 20,
                                                                       position: "absolute",
                                                                       top: 70,
                                                                       left: callLeft(item.moment),
                                                                       zIndex: 20
                                                                  }}
-                                                                 src={fecthDefaultImages(item.user.type)} />
+                                                                 src={fecthDefaultImages(item.user.type)}
+                                                                 width={20}
+                                                                 height={20}
+                                                                 alt=""
+                                                            />
                                                        </Tooltip>
 
                                                   ))
@@ -276,7 +279,7 @@ const WaveTrack = (props: IProps) => {
                               >
                                    {
                                         track.imgUrl ? (
-                                             <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="" style={{ height: 250, width: 250 }}></img>
+                                             <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`} alt="" width={250} height={250} />
                                         ) : (
                                              <div className="" style={{ width: 250, height: 250, background: "#ccc" }}>
                                              </div>

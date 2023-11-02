@@ -12,6 +12,7 @@ import Chip from '@mui/material/Chip';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import Image from "next/image";
 dayjs.extend(relativeTime)
 
 interface IProps {
@@ -144,7 +145,7 @@ const CommentTrack = (props: IProps) => {
                     />
                     <div className="comment-wrapper" style={{ display: "flex", marginTop: "30px" }}>
                          <div className="left" style={{ paddingRight: "30px", display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
-                              <img src={fecthDefaultImages(track?.uploader?.type as string)} alt="" style={{ height: 150, width: 150 }} />
+                              <Image src={fecthDefaultImages(track?.uploader?.type as string)} alt="" width={150} height={150} />
                               <div className="your-email" style={{ textAlign: "center" }}>
                                    <p>{track?.uploader?.email}</p>
                               </div>
@@ -154,7 +155,7 @@ const CommentTrack = (props: IProps) => {
                                    trackComment?.map((item: any, index: any) => (
                                         <Box style={{ display: "flex", marginTop: index >= 1 ? "30px" : "0px" }} key={item._id}>
                                              <div className="comment-info" style={{ display: "flex" }}>
-                                                  <img src={fecthDefaultImages(item?.user?.type as string)} alt="" style={{ height: 40, width: 40, marginTop: "6px" }} />
+                                                  <Image src={fecthDefaultImages(item?.user?.type as string)} alt="" height={40} width={40} />
                                                   <div style={{ paddingLeft: 20 }}>
                                                        <p style={{ marginTop: 0, marginBottom: "3px", fontSize: "14px" }}>{item.user.email} at
                                                             <span

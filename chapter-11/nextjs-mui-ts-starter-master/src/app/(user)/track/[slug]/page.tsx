@@ -43,7 +43,8 @@ const DetailTrackPage = async (props: any) => {
 
      const tracks = await sendRequest<IBackendRes<ITrackTop>>({
           url: `http://localhost:8000/api/v1/tracks/${id}`,
-          method: "GET"
+          method: "GET",
+          nextOption: { cache: "no-store" }
      });
 
      const comments = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({

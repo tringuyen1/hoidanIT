@@ -22,6 +22,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react"
 import { fecthDefaultImages } from "@/app/utils/api";
+import Image from "next/image";
 
 const Search = styled("div")(({ theme }) => ({
      position: "relative",
@@ -253,11 +254,14 @@ export default function AppHeader() {
                                                   <Link href={"/playlist"}>Playlist</Link>
                                                   <Link href={"/like"}>Likes</Link>
                                                   <Link href={"/track/upload"}>Upload</Link>
-                                                  <img
+                                                  <Image
                                                        src={fecthDefaultImages(session.user.type)}
-                                                       style={{ height: 35, width: 35, cursor: "pointer" }}
-                                                       onClick={handleProfileMenuOpen}>
-                                                  </img>
+                                                       style={{ cursor: "pointer" }}
+                                                       onClick={handleProfileMenuOpen}
+                                                       alt=""
+                                                       height={35}
+                                                       width={35}
+                                                  />
                                                   {/* <Avatar onClick={handleProfileMenuOpen}>T</Avatar> */}
                                              </>
                                         ) : <Link href={"/auth/signin"} >Sign In</Link>

@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import Axios from "axios";
 import { sendRequest, sendRequestFile } from '@/app/utils/api';
 import { useToast } from '@/app/utils/toast';
+import Image from 'next/image';
 
 interface IProps {
     setValue: (v: number) => void
@@ -168,11 +169,12 @@ const Step2 = (props: IProps) => {
                             <div style={{ height: 250, width: 250, background: "#ccc" }}>
                                 <div>
                                     {info.imgUrl && (
-                                        <img
-                                            style={{ height: 250, width: 250 }}
+                                        <Image
                                             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`}
-                                            alt=''>
-                                        </img>
+                                            alt=''
+                                            height={250}
+                                            width={250}
+                                        />
                                     )}
                                 </div>
                             </div>
