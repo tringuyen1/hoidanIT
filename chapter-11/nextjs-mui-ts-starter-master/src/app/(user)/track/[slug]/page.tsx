@@ -16,10 +16,11 @@ export async function generateMetadata(
      parent: ResolvingMetadata
 ): Promise<Metadata> {
      // read route params
-     const slug = params.slug
+     const slug = params.slug;
+     const id = slug.split(".html")[0].split("-").pop();
 
      const res = await sendRequest<IBackendRes<ITrackTop>>({
-          url: `http://localhost:8000/api/v1/tracks/${slug}`,
+          url: `http://localhost:8000/api/v1/tracks/${id}`,
           method: "GET",
           nextOption: { cache: "no-store" }
      });
@@ -38,8 +39,10 @@ export async function generateMetadata(
 
 const DetailTrackPage = async (props: any) => {
      const { params } = props;
+     const id = params.slug.split(".html")[0].split("-").pop();
+
      const tracks = await sendRequest<IBackendRes<ITrackTop>>({
-          url: `http://localhost:8000/api/v1/tracks/${params.slug}`,
+          url: `http://localhost:8000/api/v1/tracks/${id}`,
           method: "GET"
      });
 
@@ -49,7 +52,7 @@ const DetailTrackPage = async (props: any) => {
           queryParams: {
                current: 1,
                pageSize: 100,
-               trackId: params.slug,
+               trackId: id,
                sort: "-createdAt"
           }
      })

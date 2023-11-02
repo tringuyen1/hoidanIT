@@ -9,6 +9,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Divider from "@mui/material/Divider";
 import { useHasMounted } from "@/app/utils/customHook";
+import { convertSlugUrl } from "@/app/utils/api";
 
 export interface IProps {
   data: ITrackTop[];
@@ -100,7 +101,7 @@ const MainSlider = (props: IProps) => {
                 alt=""
               ></img>
               <Link
-                href={`/track/${song._id}?audio=${song.trackUrl}&id=${song._id}`}
+                href={`/track/${convertSlugUrl(song.title)}-${song._id}.html?audio=${song.trackUrl}`}
                 style={{ color: "unset", textDecoration: "none" }}
               >
                 <h4>{song.title}</h4>

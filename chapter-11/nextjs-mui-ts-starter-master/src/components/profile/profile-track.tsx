@@ -13,6 +13,7 @@ import { useTrackContext } from '@/lib/track.wrapper';
 import { useHasMounted } from '@/app/utils/customHook';
 import PauseIcon from '@mui/icons-material/Pause';
 import Link from "next/link";
+import { convertSlugUrl } from '@/app/utils/api';
 
 interface profileTracks {
      data: any
@@ -36,7 +37,7 @@ const ProfileTrack = (props: profileTracks) => {
                <Card sx={{ display: 'flex', width: "100%", justifyContent: "space-between", }} key={data._id}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                          <CardContent sx={{ flex: '1 0 auto' }}>
-                              <Link href={`/track/${data._id}?audio=${data.trackUrl}&id=${data._id}`} style={{ textDecoration: "none", color: "unset", cursor: "pointer" }}>
+                              <Link href={`/track/${convertSlugUrl(data.title)}-${data._id}.html?audio=${data.trackUrl}`} style={{ textDecoration: "none", color: "unset", cursor: "pointer" }}>
                                    <Typography component="div" variant="h5">
                                         {data.title}
                                    </Typography>
