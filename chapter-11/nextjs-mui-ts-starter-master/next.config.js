@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  output: "standalone",
   modularizeImports: {
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',
@@ -11,10 +12,16 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'localhost',
-        port: '8000',
+        hostname: 'host.docker.internal',
+        port: '8001',
         pathname: '/images/**',
       },
+      // {
+      //   protocol: 'http',
+      //   hostname: 'localhost',
+      //   port: '8000',
+      //   pathname: '/images/**',
+      // },
     ],
   },
 };
