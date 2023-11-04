@@ -22,7 +22,10 @@ export async function generateMetadata(
      const res = await sendRequest<IBackendRes<ITrackTop>>({
           url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
           method: "GET",
-          nextOption: { cache: "no-store" }
+          nextOption: {
+               // cache: "no-store" ,
+               tags: ["track-by-id"]
+          }
      });
 
      return {
@@ -44,10 +47,17 @@ const DetailTrackPage = async (props: any) => {
      const tracks = await sendRequest<IBackendRes<ITrackTop>>({
           url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
           method: "GET",
-          nextOption: { cache: "no-store" }
+          nextOption: {
+               cache: "no-store", // ko luu lai trong data catch (ko lưu lại dữ liệu. để có thể update lại dữ liệu từ api).
+               // next: {
+               //      // revalidata: 86400, // update dữ liệu theo thời gian đặt sẵn. ít khi dùng
+               //      // tags: ['tracks'], // gọi id để update. sử dụng nhiều hơn
+               //      // path: "" // gọi path để update
+               // }
+          },
      });
 
-     await new Promise(resolve => setTimeout(resolve, 3000))
+     // await new Promise(resolve => setTimeout(resolve, 3000))
 
      const comments = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
           url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/comments`,
