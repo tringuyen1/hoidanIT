@@ -47,6 +47,8 @@ const DetailTrackPage = async (props: any) => {
           nextOption: { cache: "no-store" }
      });
 
+     await new Promise(resolve => setTimeout(resolve, 3000))
+
      const comments = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
           url: "http://localhost:8000/api/v1/tracks/comments",
           method: "POST",
