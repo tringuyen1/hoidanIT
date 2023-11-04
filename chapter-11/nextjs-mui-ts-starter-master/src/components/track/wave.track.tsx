@@ -133,7 +133,7 @@ const WaveTrack = (props: IProps) => {
      const handleIncreaseCount = async () => {
           if (viewRef.current) {
                const res = await sendRequest<IBackendRes<IModelPaginate<ITrackLikes>>>({
-                    url: "http://localhost:8000/api/v1/tracks/increase-view",
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/increase-view`,
                     method: "POST",
                     body: {
                          trackId: track?._id,

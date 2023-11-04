@@ -56,7 +56,7 @@ const Step1 = (props: IProps) => {
 
 			try {
 				const file = await Axios.post(
-					'http://localhost:8000/api/v1/files/upload', formData, config
+					`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`, formData, config
 				);
 				setValue(1);
 				setTrackUpload((prevState: any) => ({

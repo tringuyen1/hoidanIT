@@ -109,7 +109,7 @@ const Step2 = (props: IProps) => {
     const handleCreateNewTrack = async () => {
         console.log(">>>> check", info);
         const res = await sendRequest<IBackendRes<ITrackTop[]>>({
-            url: "http://localhost:8000/api/v1/tracks",
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks`,
             method: "POST",
             body: info,
             headers: {
@@ -134,7 +134,7 @@ const Step2 = (props: IProps) => {
             headers: { Authorization: `Bearer ${session?.access_token}`, target_type: "images" },
         }
         try {
-            const res = await Axios.post("http://localhost:8000/api/v1/files/upload", formData, config);
+            const res = await Axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`, formData, config);
             setInfo({
                 ...info,
                 imgUrl: res.data.data.fileName

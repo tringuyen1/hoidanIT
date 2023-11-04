@@ -31,7 +31,7 @@ const CommentTrack = (props: IProps) => {
 
      const handleSubmit = async () => {
           const res = await sendRequest<IBackendRes<ITrackComment>>({
-               url: "http://localhost:8000/api/v1/comments",
+               url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/comments`,
                method: "POST",
                body: {
                     content: yourComment,
@@ -55,7 +55,7 @@ const CommentTrack = (props: IProps) => {
      const fetchData = async () => {
           if (session?.access_token) {
                const likes = await sendRequest<IBackendRes<IModelPaginate<ITrackLikes>>>({
-                    url: "http://localhost:8000/api/v1/likes?current=1&pageSize=10",
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes?current=1&pageSize=10`,
                     method: "GET",
                     headers: {
                          Authorization: `Bearer ${session?.access_token}`
@@ -88,7 +88,7 @@ const CommentTrack = (props: IProps) => {
 
      const handleLike = async () => {
           const res = await sendRequest<IBackendRes<ITrackComment>>({
-               url: "http://localhost:8000/api/v1/likes",
+               url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/likes`,
                method: "POST",
                body: {
                     track: track._id,

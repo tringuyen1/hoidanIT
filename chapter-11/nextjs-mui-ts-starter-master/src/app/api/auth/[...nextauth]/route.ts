@@ -27,7 +27,7 @@ export const authOptions: AuthOptions = {
             async authorize(credentials, req) {
                 // Add logic here to look up the user from the credentials supplied
                 const res = await sendRequest<IBackendRes<JWT>>({
-                    url: "http://localhost:8000/api/v1/auth/login",
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
                     method: "POST",
                     body: {
                         username: credentials?.username,
@@ -59,7 +59,7 @@ export const authOptions: AuthOptions = {
                 // save in cookies
                 // call api
                 const res = await sendRequest<IBackendRes<IAuth>>({
-                    url: "http://localhost:8000/api/v1/auth/social-media",
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/social-media`,
                     method: "POST",
                     body: {
                         type: account?.provider.toUpperCase(),

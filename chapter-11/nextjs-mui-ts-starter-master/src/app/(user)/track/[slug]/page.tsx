@@ -20,7 +20,7 @@ export async function generateMetadata(
      const id = slug.split(".html")[0].split("-").pop();
 
      const res = await sendRequest<IBackendRes<ITrackTop>>({
-          url: `http://localhost:8000/api/v1/tracks/${id}`,
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
           method: "GET",
           nextOption: { cache: "no-store" }
      });
@@ -42,7 +42,7 @@ const DetailTrackPage = async (props: any) => {
      const id = params.slug.split(".html")[0].split("-").pop();
 
      const tracks = await sendRequest<IBackendRes<ITrackTop>>({
-          url: `http://localhost:8000/api/v1/tracks/${id}`,
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${id}`,
           method: "GET",
           nextOption: { cache: "no-store" }
      });
@@ -50,7 +50,7 @@ const DetailTrackPage = async (props: any) => {
      await new Promise(resolve => setTimeout(resolve, 3000))
 
      const comments = await sendRequest<IBackendRes<IModelPaginate<ITrackComment>>>({
-          url: "http://localhost:8000/api/v1/tracks/comments",
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/comments`,
           method: "POST",
           queryParams: {
                current: 1,
