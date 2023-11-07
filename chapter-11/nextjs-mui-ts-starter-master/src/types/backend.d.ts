@@ -106,4 +106,21 @@ declare global {
         countLike: number,
         countPlay: number
     }
+
+    interface ITrackPlayList {
+        _id: string,
+        title: string,
+        isPublic: true,
+        user: {
+            _id: string,
+            email: string,
+            name: string,
+            role: string
+        },
+        tracks: [];
+        isDeleted: boolean,
+        createdAt: string,
+        updatedAt: string,
+        __v: number
+    }
 }
