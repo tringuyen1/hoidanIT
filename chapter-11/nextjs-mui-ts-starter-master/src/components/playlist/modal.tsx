@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -15,6 +16,10 @@ import DialogActions from '@mui/material/DialogActions';
 import { Theme, useTheme } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { sendRequest } from '@/app/utils/api';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 
 interface IProps {
@@ -23,6 +28,13 @@ interface IProps {
      setOpen: any;
      setModal: any;
 }
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+     props,
+     ref,
+) {
+     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -59,9 +71,29 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
 
 const Modal = (props: IProps) => {
      const { modal, open, setOpen, setModal } = props;
+     const { data: session } = useSession();
      const theme = useTheme();
      const [age, setAge] = useState('');
+     const [openAlert, setOpenAlert] = React.useState(false);
+     const [newPlaylist, setNewPlaylist] = useState("");
      const [personName, setPersonName] = useState<string[]>([]);
+
+     const handleAddNewPlayList = async () => {
+          const res = await sendRequest<IBackendRes<any>>({
+               url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists/empty`,
+               method: "POST",
+               body: {
+                    title: newPlaylist,
+                    isPublic: true
+               },
+               headers: {
+                    Authorization: `Bearer ${session?.access_token}`,
+               }
+          })
+          if (res.statusCode === 201) {
+               setOpenAlert(true)
+          }
+     }
 
      const handleChangeTracks = (event: SelectChangeEvent<typeof personName>) => {
           const {
@@ -81,6 +113,15 @@ const Modal = (props: IProps) => {
           setOpen(false);
           setModal("");
      };
+
+     const handleCloseAlert = (event?: React.SyntheticEvent | Event, reason?: string) => {
+          if (reason === 'clickaway') {
+               return;
+          }
+
+          setOpenAlert(false);
+     };
+
      return (
           <>
                <Dialog open={open} onClose={handleClose}>
@@ -97,15 +138,17 @@ const Modal = (props: IProps) => {
                                              type="playlist"
                                              sx={{ width: "500px" }}
                                              variant="standard"
+                                             onChange={(e) => {
+                                                  setNewPlaylist(e.target.value)
+                                             }}
                                         />
                                    </FormControl>
                                    <DialogActions sx={{ mt: "30px" }}>
                                         <Button onClick={handleClose}>Cancel</Button>
-                                        <Button onClick={handleClose}>Save</Button>
+                                        <Button onClick={handleAddNewPlayList}>Save</Button>
                                    </DialogActions>
                               </DialogContent>
                          </>
-
                     )}
 
                     {modal === "tracks" && (
@@ -169,6 +212,11 @@ const Modal = (props: IProps) => {
                     )}
 
                </Dialog>
+               <Snackbar open={openAlert} autoHideDuration={1000} onClose={handleClose}>
+                    <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
+                         This is a success message!
+                    </Alert>
+               </Snackbar>
           </>
      )
 }

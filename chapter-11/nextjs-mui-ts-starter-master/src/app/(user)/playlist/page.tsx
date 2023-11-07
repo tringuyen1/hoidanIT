@@ -6,7 +6,7 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 const PlaylistPage = async () => {
      const session = await getServerSession(authOptions);
 
-     const playlist = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({
+     const playlist = await sendRequest<IBackendRes<IModelPaginate<ITrackPlayList[]>>>({
           url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists?current=1&pageSize=10`,
           method: "GET",
           headers: {
@@ -14,11 +14,11 @@ const PlaylistPage = async () => {
           },
      });
 
-     console.log(playlist)
+     console.log(playlist.data?.result)
 
      return (
           <>
-               <PlayListTag playlist={playlist} />
+               <PlayListTag playlist={playlist.data?.result ?? []} />
           </>
      );
 };
