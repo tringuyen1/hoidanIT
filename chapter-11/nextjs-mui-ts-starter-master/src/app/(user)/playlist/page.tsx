@@ -14,11 +14,17 @@ const PlaylistPage = async () => {
           },
      });
 
-     console.log(playlist.data?.result)
+     const tracks = await sendRequest<IBackendRes<IModelPaginate<ITrackTop[]>>>({
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks?current=1&pageSize=10`,
+          method: "GET",
+          headers: {
+               Authorization: `Bearer ${session?.access_token}`
+          },
+     });
 
      return (
           <>
-               <PlayListTag playlist={playlist.data?.result ?? []} />
+               <PlayListTag playlist={playlist.data?.result ?? []} tracks={tracks.data?.result ?? []} />
           </>
      );
 };

@@ -12,11 +12,12 @@ import { useState } from 'react';
 import Modal from './modal';
 
 interface IProps {
-     playlist: any
+     playlist: any;
+     tracks: any
 }
 
 const PlayListTag = (props: IProps) => {
-     const { playlist } = props;
+     const { playlist, tracks } = props;
      const [modal, setModal] = useState("")
      const [open, setOpen] = useState(false);
 
@@ -97,6 +98,8 @@ const PlayListTag = (props: IProps) => {
                     open={open}
                     setOpen={setOpen}
                     setModal={setModal}
+                    playlist={playlist}
+                    tracks={tracks}
                />
           </div>
 

@@ -20,6 +20,7 @@ import { useSession } from 'next-auth/react';
 import { sendRequest } from '@/app/utils/api';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import { useRouter } from 'next/navigation';
 
 
 interface IProps {
@@ -27,6 +28,8 @@ interface IProps {
      open: any;
      setOpen: any;
      setModal: any;
+     playlist: any;
+     tracks: any;
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -70,13 +73,15 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
 }
 
 const Modal = (props: IProps) => {
-     const { modal, open, setOpen, setModal } = props;
+     const { modal, open, setOpen, setModal, playlist, tracks } = props;
+     const router = useRouter();
      const { data: session } = useSession();
      const theme = useTheme();
-     const [age, setAge] = useState('');
+     const [playlistId, setPlaylistId] = useState('');
      const [openAlert, setOpenAlert] = React.useState(false);
      const [newPlaylist, setNewPlaylist] = useState("");
-     const [personName, setPersonName] = useState<string[]>([]);
+     const [tracksId, setTracksId] = useState<string[]>([]);
+     const [message, setMessage] = useState("");
 
      const handleAddNewPlayList = async () => {
           const res = await sendRequest<IBackendRes<any>>({
@@ -91,28 +96,26 @@ const Modal = (props: IProps) => {
                }
           })
           if (res.statusCode === 201) {
-               setOpenAlert(true)
+               setMessage(res.message)
+               router.refresh();
           }
+
+          setOpenAlert(true);
+          setOpen(false);
      }
 
-     const handleChangeTracks = (event: SelectChangeEvent<typeof personName>) => {
-          const {
-               target: { value },
-          } = event;
-          setPersonName(
-               // On autofill we get a stringified value.
-               typeof value === 'string' ? value.split(',') : value,
-          );
-     };
-
      const handleChangePlaylist = (event: SelectChangeEvent) => {
-          setAge(event.target.value);
+          setPlaylistId(event.target.value);
      };
 
      const handleClose = () => {
           setOpen(false);
           setModal("");
      };
+
+     const handleCloseMessage = () => {
+          setOpenAlert(false);
+     }
 
      const handleCloseAlert = (event?: React.SyntheticEvent | Event, reason?: string) => {
           if (reason === 'clickaway') {
@@ -121,6 +124,34 @@ const Modal = (props: IProps) => {
 
           setOpenAlert(false);
      };
+
+     const handleAddTrackToPlaylist = async () => {
+          const chosenPlayList = playlist.find((item: any) => item._id === playlistId);
+          const tracks = tracksId.map(item => {
+               const parts = item.split("###");
+               return parts[1];
+          });
+          const res = await sendRequest<IBackendRes<any>>({
+               url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/playlists`,
+               method: "PATCH",
+               body: {
+                    "id": chosenPlayList._id,
+                    "title": chosenPlayList.title,
+                    "isPublic": chosenPlayList.isPublic,
+                    "tracks": tracks
+               },
+               headers: {
+                    Authorization: `Bearer ${session?.access_token}`,
+               }
+          })
+
+          if (res.statusCode === 200) {
+               setMessage(res.message)
+               router.refresh();
+          }
+          setOpenAlert(true);
+          setOpen(false);
+     }
 
      return (
           <>
@@ -160,7 +191,7 @@ const Modal = (props: IProps) => {
                                         <Select
                                              labelId="demo-simple-select-standard-label"
                                              id="demo-simple-select-standard"
-                                             value={age}
+                                             value={playlistId}
                                              onChange={handleChangePlaylist}
                                              sx={{ width: "550px" }}
                                              label="Age"
@@ -168,9 +199,12 @@ const Modal = (props: IProps) => {
                                              <MenuItem value="">
                                                   <em>None</em>
                                              </MenuItem>
-                                             <MenuItem value={10}>Ten</MenuItem>
-                                             <MenuItem value={20}>Twenty</MenuItem>
-                                             <MenuItem value={30}>Thirty</MenuItem>
+                                             {
+                                                  playlist.length > 0 && playlist.map((item: any) => (
+                                                       <MenuItem key={item._id} value={item._id}>{item.title}</MenuItem>
+                                                  ))
+                                             }
+
                                         </Select>
                                    </FormControl>
                                    <FormControl variant="standard" sx={{ mt: "30px", width: 300 }}>
@@ -180,41 +214,43 @@ const Modal = (props: IProps) => {
                                              id="demo-multiple-chip"
                                              multiple
                                              sx={{ width: "550px" }}
-                                             value={personName}
-                                             onChange={handleChangeTracks}
+                                             value={tracksId}
+                                             onChange={(e) => {
+                                                  setTracksId(e.target.value as any)
+                                             }}
                                              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
                                              renderValue={(selected) => (
                                                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                                        {selected.map((value) => (
-                                                            <Chip key={value} label={value} />
+                                                            <Chip key={value} label={value?.split("###")?.[0]} />
                                                        ))}
                                                   </Box>
                                              )}
                                              MenuProps={MenuProps}
                                         >
-                                             {names.map((name) => (
+                                             {tracks.map((track: any) => (
                                                   <MenuItem
-                                                       key={name}
-                                                       value={name}
-                                                       style={getStyles(name, personName, theme)}
+                                                       key={track._id}
+                                                       value={`${track.title}###${track._id}`}
+                                                       style={getStyles(`${track.title}###${track._id}`, tracksId, theme)}
                                                   >
-                                                       {name}
+                                                       {track.title}
                                                   </MenuItem>
                                              ))}
                                         </Select>
                                    </FormControl>
                                    <DialogActions sx={{ mt: "30px" }}>
                                         <Button onClick={handleClose}>Cancel</Button>
-                                        <Button onClick={handleClose}>Save</Button>
+                                        <Button onClick={handleAddTrackToPlaylist}>Save</Button>
                                    </DialogActions>
                               </DialogContent>
                          </>
                     )}
 
                </Dialog>
-               <Snackbar open={openAlert} autoHideDuration={1000} onClose={handleClose}>
+               <Snackbar open={openAlert} autoHideDuration={1000} onClose={handleCloseMessage}>
                     <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
-                         This is a success message!
+                         {message}
                     </Alert>
                </Snackbar>
           </>
