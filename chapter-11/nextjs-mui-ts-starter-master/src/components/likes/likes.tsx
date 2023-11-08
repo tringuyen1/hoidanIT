@@ -1,3 +1,5 @@
+"use client"
+
 import { Box, Container, Grid } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -11,7 +13,6 @@ interface IProps {
      liked: any
 }
 
-
 const LikeTag = (props: IProps) => {
      const { liked } = props
      return (
@@ -24,7 +25,7 @@ const LikeTag = (props: IProps) => {
                                    {
                                         liked.length > 0 && liked.map((item: any) => (
                                              <Grid item xs={12} md={3} key={item._id}>
-                                                  <Card >
+                                                  <Card sx={{ display: "flex", height: "100%" }}>
                                                        <CardActionArea>
                                                             <CardMedia
                                                                  component="img"
@@ -32,7 +33,7 @@ const LikeTag = (props: IProps) => {
                                                                  image={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`}
                                                                  alt="green iguana"
                                                             />
-                                                            <CardContent>
+                                                            <CardContent sx={{ flex: 1 }}>
                                                                  <Link href={`/track/${convertSlugUrl(item.title)}-${item._id}.html?audio=${item.trackUrl}`} style={{ textDecoration: "none", color: "unset", cursor: "pointer" }}>
                                                                       <Typography gutterBottom variant="h5" component="div">
                                                                            {item.title}
