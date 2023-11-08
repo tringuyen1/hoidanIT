@@ -40,7 +40,6 @@ const PlayListTag = (props: IProps) => {
      };
 
      const handlePlayPause = (play: boolean, data: any) => {
-          console.log("check >>>", data)
           setCurrentTrack({ ...data, isPlaying: play });
      }
 
