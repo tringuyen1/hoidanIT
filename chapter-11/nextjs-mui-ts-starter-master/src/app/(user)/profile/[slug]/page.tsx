@@ -1,6 +1,13 @@
 import { sendRequest } from "@/app/utils/api";
 import { Box, Container, Grid } from "@mui/material";
 import ProfileTrack from "@/components/profile/profile-track";
+import type { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+     title: 'Profile',
+     description: 'describe me',
+}
 
 
 const ProfilePage = async ({ params }: { params: { slug: string } }) => {

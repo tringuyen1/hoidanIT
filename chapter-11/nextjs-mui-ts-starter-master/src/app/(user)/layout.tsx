@@ -9,7 +9,7 @@ import { idJsonObject } from "../constant/contstant";
 
 
 export const metadata: Metadata = {
-     title: 'Home Page',
+     title: 'Home',
      description: 'describe me',
 }
 

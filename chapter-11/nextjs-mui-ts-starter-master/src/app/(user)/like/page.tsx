@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 
 export const metadata: Metadata = {
-     title: 'Like Page',
+     title: 'Like',
      description: 'describe me',
 }
 

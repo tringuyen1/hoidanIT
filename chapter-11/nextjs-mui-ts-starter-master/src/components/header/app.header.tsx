@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react"
 import { fecthDefaultImages } from "@/app/utils/api";
 import Image from "next/image";
+import ActiveLink from "./active.link";
 
 const Search = styled("div")(({ theme }) => ({
      position: "relative",
@@ -250,15 +251,22 @@ export default function AppHeader() {
                                         "> a": {
                                              color: "unset",
                                              textDecoration: "none",
+
+                                             "&.active": {
+                                                  background: "#3b4a59",
+                                                  color: "#cefaff",
+                                                  borderRadius: "5px",
+                                                  padding: "10px"
+                                             }
                                         },
                                    }}
                               >
                                    {
                                         session ? (
                                              <>
-                                                  <Link href={"/playlist"}>Playlist</Link>
-                                                  <Link href={"/like"}>Likes</Link>
-                                                  <Link href={"/track/upload"}>Upload</Link>
+                                                  <ActiveLink href={"/playlist"}>Playlist</ActiveLink>
+                                                  <ActiveLink href={"/like"}>Likes</ActiveLink>
+                                                  <ActiveLink href={"/track/upload"}>Upload</ActiveLink>
                                                   <Image
                                                        src={fecthDefaultImages(session.user.type)}
                                                        style={{ cursor: "pointer" }}

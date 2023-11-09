@@ -188,6 +188,7 @@ export default function AuthSignIn() {
                                 sx={{
                                     margin: "10px"
                                 }}
+                                onClick={() => { signIn("google", { redirect: false }) }}
                             >
                                 <GoogleIcon
                                     sx={{ margin: "10px", fontSize: "30px", cursor: "pointer" }}
