@@ -1,5 +1,8 @@
+// nestjs + typescript
 https://www.udemy.com/course/hoidanit-react-nextjs-mui-typescript/learn/lecture/39860940#overview
-https://drive.google.com/file/d/13F-b72pXJlrnKtn30ghjMljeEJzl_d0D/view?fbclid=IwAR027I-9HaHPyIy7P3m17KdVTtKsiOmyUx7K3s1rswHJ4nYeNw7tsDSzRa0
-
-
 https://drive.google.com/file/d/1rlHfWutU9Rn9LCdib7_WOgBm02EoAvAn/view
+
+
+// node js + javascript
+https://www.udemy.com/course/hoidanit-backend-restful-api-from-zero/learn/lecture/34754352#overview
+https://drive.google.com/file/d/1P_k4yLCVCXR1S_7XlBJ4IO_m6pn9_3p_/view
